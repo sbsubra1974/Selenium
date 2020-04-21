@@ -1,4 +1,5 @@
 @smokeTest
+@sampletag
 Feature: To test my cucumber test is running
 I want to run a sample feature file.
 
