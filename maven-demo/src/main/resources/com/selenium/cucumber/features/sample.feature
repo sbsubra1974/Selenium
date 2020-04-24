@@ -8,6 +8,7 @@
 @sampletag7
 @sampletag8
 @sampletag9
+@sampletag10
 Feature: To test my cucumber test is running
 I want to run a sample feature file.
 
