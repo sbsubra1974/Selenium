@@ -15,6 +15,7 @@
 @sampletag14
 @sampletag16
 @sampletag17
+@sampletag18
 Feature: To test my cucumber test is running
 I want to run a sample feature file.
 
