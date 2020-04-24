@@ -1,5 +1,15 @@
 @smokeTest
-@sampletag
+@sampletag1
+@sampletag2
+@sampletag3
+@sampletag4
+@sampletag5
+@sampletag6
+@sampletag7
+@sampletag8
+@sampletag9
+@sampletag10
+@sampletag11
 Feature: To test my cucumber test is running
 I want to run a sample feature file.
 

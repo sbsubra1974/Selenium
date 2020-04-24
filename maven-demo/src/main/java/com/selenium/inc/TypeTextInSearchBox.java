@@ -20,7 +20,7 @@ public class TypeTextInSearchBox {
 		System.out.println("firstResult: "+firstResult.getAttribute("value"));
 	}
 	finally {
-	webdriver.quit();
+	webdriver.quit(); //this will quit webdriver instances running on the machine
 	}
 
 	}

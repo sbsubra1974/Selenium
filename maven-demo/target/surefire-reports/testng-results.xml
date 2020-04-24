@@ -2,26 +2,26 @@
 <testng-results ignored="0" total="4" passed="3" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-04-17T18:03:46Z" name="Surefire suite" finished-at="2020-04-17T18:05:15Z" duration-ms="89297">
+  <suite started-at="2020-04-24T11:37:42Z" name="Surefire suite" finished-at="2020-04-24T11:38:49Z" duration-ms="66486">
     <groups>
     </groups>
-    <test started-at="2020-04-17T18:03:46Z" name="Surefire test" finished-at="2020-04-17T18:05:15Z" duration-ms="89297">
+    <test started-at="2020-04-24T11:37:42Z" name="Surefire test" finished-at="2020-04-24T11:38:49Z" duration-ms="66486">
       <class name="com.selenium.GitHubPageObjectFactoryTest">
-        <test-method signature="testPageObjectFactory()" started-at="2020-04-17T23:33:46Z" name="testPageObjectFactory[0]" finished-at="2020-04-17T23:34:50Z" duration-ms="63485" status="PASS">
+        <test-method signature="testPageObjectFactory()" started-at="2020-04-24T17:07:42Z" name="testPageObjectFactory[0]" finished-at="2020-04-24T17:08:24Z" duration-ms="41988" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPageObjectFactory[0] -->
-        <test-method signature="testPageObjectFactory()" started-at="2020-04-17T23:33:46Z" name="testPageObjectFactory[1]" finished-at="2020-04-17T23:35:02Z" duration-ms="76389" status="PASS">
+        <test-method signature="testPageObjectFactory()" started-at="2020-04-24T17:07:42Z" name="testPageObjectFactory[1]" finished-at="2020-04-24T17:08:37Z" duration-ms="54258" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPageObjectFactory[1] -->
-        <test-method signature="testPageObjectFactory()" started-at="2020-04-17T23:33:46Z" name="testPageObjectFactory[2]" finished-at="2020-04-17T23:35:15Z" duration-ms="89056" status="PASS">
+        <test-method signature="testPageObjectFactory()" started-at="2020-04-24T17:07:42Z" name="testPageObjectFactory[2]" finished-at="2020-04-24T17:08:49Z" duration-ms="66319" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPageObjectFactory[2] -->
       </class> <!-- com.selenium.GitHubPageObjectFactoryTest -->
       <class name="com.selenium.YahooGoogleSwitchTabPageObjectTest">
-        <test-method signature="testYahooGoogleSwitchTabPageObject() throws java.lang.InterruptedException" started-at="2020-04-17T23:33:46Z" name="testYahooGoogleSwitchTabPageObject" finished-at="2020-04-17T23:34:34Z" duration-ms="47523" status="FAIL">
+        <test-method signature="testYahooGoogleSwitchTabPageObject() throws java.lang.InterruptedException" started-at="2020-04-24T17:07:42Z" name="testYahooGoogleSwitchTabPageObject" finished-at="2020-04-24T17:08:11Z" duration-ms="28981" status="FAIL">
           <exception class="org.junit.ComparisonFailure">
             <message>
               <![CDATA[expected:<[g]oogle - Yahoo India ...> but was:<[G]oogle - Yahoo India ...>]]>

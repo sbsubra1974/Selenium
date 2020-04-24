@@ -1,11 +1,11 @@
-com\selenium\cucumber\stepdef\GitHubPageObjectFactoryStepDefinition.class
-com\selenium\testng\ExecuteKeywordTest.class
-com\selenium\YahooGoogleSwitchTabPageObjectTest.class
 com\selenium\cucumber\junit\testrunner\GoogleMapPageObjectFactoryTestRunner.class
 com\selenium\cucumber\stepdef\GoogleMapPageObjectFactoryStepDefinition.class
 com\selenium\cucumber\junit\testrunner\SampleTestRunnerClass.class
-com\selenium\cucumber\junit\testrunner\GitHubPageObjectFactoryTestRunner.class
-com\selenium\cucumber\stepdef\PepperFryPageObjectFactoryStepDefinition.class
 com\selenium\cucumber\junit\testrunner\PepperFryPageObjectFactoryTestRunner.class
 com\selenium\junit\testrunner\TestRunnerClass.class
 com\selenium\cucumber\stepdef\SampleStepDefinition.class
+com\selenium\cucumber\stepdef\GitHubPageObjectFactoryStepDefinition.class
+com\selenium\testng\ExecuteKeywordTest.class
+com\selenium\YahooGoogleSwitchTabPageObjectTest.class
+com\selenium\cucumber\junit\testrunner\GitHubPageObjectFactoryTestRunner.class
+com\selenium\cucumber\stepdef\PepperFryPageObjectFactoryStepDefinition.class
