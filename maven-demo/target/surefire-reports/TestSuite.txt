@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: TestSuite
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.186 s <<< FAILURE! - in TestSuite
+hardError(com.selenium.testng.SoftvsHardErrorTest)  Time elapsed: 0.012 s  <<< FAILURE!
+java.lang.AssertionError: expected [true] but found [false]
+	at com.selenium.testng.SoftvsHardErrorTest.hardError(SoftvsHardErrorTest.java:17)
+
+softError(com.selenium.testng.SoftvsHardErrorTest)  Time elapsed: 0.024 s  <<< FAILURE!
+java.lang.AssertionError: 
+The following asserts failed:
+	expected [true] but found [false],
+	expected [false] but found [true],
+	expected [Failed] but found [Sample]
+	at com.selenium.testng.SoftvsHardErrorTest.softError(SoftvsHardErrorTest.java:33)
+

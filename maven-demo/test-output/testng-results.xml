@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
+<testng-results ignored="1" total="3" passed="1" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-04-11T18:52:02 IST" name="Suite" finished-at="2020-04-11T18:52:33 IST" duration-ms="31001">
+  <suite started-at="2020-05-04T21:38:35 IST" name="Suite" finished-at="2020-05-04T21:38:52 IST" duration-ms="16615">
     <groups>
+      <group name="gp1">
+        <method signature="SwitchTabsPageObjectTest.switchTabs()[pri:0, instance:com.selenium.testng.SwitchTabsPageObjectTest@16610890]" name="switchTabs" class="com.selenium.testng.SwitchTabsPageObjectTest"/>
+      </group> <!-- gp1 -->
     </groups>
-    <test started-at="2020-04-11T18:52:02 IST" name="Test" finished-at="2020-04-11T18:52:33 IST" duration-ms="31001">
-      <class name="com.selenium.testng.ExecuteKeywordTest">
-        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.ExecuteKeywordTest@2e55dd0c]" started-at="2020-04-11T18:52:02 IST" name="beforeClass" finished-at="2020-04-11T18:52:09 IST" duration-ms="7206" status="PASS">
+    <test started-at="2020-05-04T21:38:35 IST" name="HardError" finished-at="2020-05-04T21:38:35 IST" duration-ms="162">
+      <class name="com.selenium.testng.SoftvsHardErrorTest">
+        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.SoftvsHardErrorTest@2df9b86]" started-at="2020-05-04T21:38:35 IST" name="beforeClass" finished-at="2020-05-04T21:38:35 IST" duration-ms="19" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeClass -->
-        <test-method signature="testKeywordSheet()[pri:0, instance:com.selenium.testng.ExecuteKeywordTest@2e55dd0c]" started-at="2020-04-11T18:52:09 IST" name="testKeywordSheet" finished-at="2020-04-11T18:52:33 IST" duration-ms="23735" status="FAIL">
+        <test-method signature="hardError()[pri:0, instance:com.selenium.testng.SoftvsHardErrorTest@2df9b86]" started-at="2020-05-04T21:38:35 IST" name="hardError" finished-at="2020-05-04T21:38:35 IST" duration-ms="27" status="FAIL">
           <exception class="java.lang.AssertionError">
             <message>
-              <![CDATA[expected [Shirdi Ke Sai Baba] but found [Shirdi Ke Sai Baba (1977)]]]>
+              <![CDATA[expected [true] but found [false]]]>
             </message>
             <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: expected [Shirdi Ke Sai Baba] but found [Shirdi Ke Sai Baba (1977)]
+              <![CDATA[java.lang.AssertionError: expected [true] but found [false]
 at org.testng.Assert.fail(Assert.java:97)
-at org.testng.Assert.assertEqualsImpl(Assert.java:136)
-at org.testng.Assert.assertEquals(Assert.java:118)
-at org.testng.Assert.assertEquals(Assert.java:575)
-at org.testng.Assert.assertEquals(Assert.java:585)
-at com.selenium.testng.ExecuteKeywordTest.testKeywordSheet(ExecuteKeywordTest.java:129)
+at org.testng.Assert.failNotEquals(Assert.java:968)
+at org.testng.Assert.assertTrue(Assert.java:43)
+at org.testng.Assert.assertTrue(Assert.java:53)
+at com.selenium.testng.SoftvsHardErrorTest.hardError(SoftvsHardErrorTest.java:17)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -40,33 +42,40 @@ at java.base/java.util.ArrayList.forEach(ArrayList.java:1540)
 at org.testng.TestRunner.privateRun(TestRunner.java:767)
 at org.testng.TestRunner.run(TestRunner.java:588)
 at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
-at org.testng.SuiteRunner.run(SuiteRunner.java:286)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1214)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1136)
-at org.testng.TestNG.runSuites(TestNG.java:1066)
-at org.testng.TestNG.run(TestNG.java:1034)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+at org.testng.SuiteRunner.access$000(SuiteRunner.java:28)
+at org.testng.SuiteRunner$SuiteWorker.run(SuiteRunner.java:425)
+at org.testng.internal.thread.ThreadUtil.lambda$execute$0(ThreadUtil.java:68)
+at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+at java.base/java.lang.Thread.run(Thread.java:834)
 ]]>
             </full-stacktrace>
           </exception> <!-- java.lang.AssertionError -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testKeywordSheet -->
-        <test-method is-config="true" signature="afterMethod()[pri:0, instance:com.selenium.testng.ExecuteKeywordTest@2e55dd0c]" started-at="2020-04-11T18:52:33 IST" name="afterMethod" finished-at="2020-04-11T18:52:33 IST" duration-ms="1" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- afterMethod -->
-        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.ExecuteKeywordTest@2e55dd0c]" started-at="2020-04-11T18:52:33 IST" name="afterClass" finished-at="2020-04-11T18:52:33 IST" duration-ms="0" status="PASS">
+        </test-method> <!-- hardError -->
+        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.SoftvsHardErrorTest@2df9b86]" started-at="2020-05-04T21:38:35 IST" name="afterClass" finished-at="2020-05-04T21:38:35 IST" duration-ms="13" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterClass -->
-      </class> <!-- com.selenium.testng.ExecuteKeywordTest -->
-    </test> <!-- Test -->
+      </class> <!-- com.selenium.testng.SoftvsHardErrorTest -->
+    </test> <!-- HardError -->
+    <test started-at="2020-05-04T21:38:35 IST" name="SwitchTabs" finished-at="2020-05-04T21:38:52 IST" duration-ms="16615">
+      <class name="com.selenium.testng.SwitchTabsPageObjectTest">
+        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.SwitchTabsPageObjectTest@16610890]" started-at="2020-05-04T21:38:35 IST" name="beforeClass" finished-at="2020-05-04T21:38:42 IST" duration-ms="7414" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeClass -->
+        <test-method signature="switchTabs()[pri:0, instance:com.selenium.testng.SwitchTabsPageObjectTest@16610890]" started-at="2020-05-04T21:38:42 IST" name="switchTabs" finished-at="2020-05-04T21:38:50 IST" duration-ms="7806" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- switchTabs -->
+        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.SwitchTabsPageObjectTest@16610890]" started-at="2020-05-04T21:38:50 IST" name="afterClass" finished-at="2020-05-04T21:38:52 IST" duration-ms="1336" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterClass -->
+      </class> <!-- com.selenium.testng.SwitchTabsPageObjectTest -->
+    </test> <!-- SwitchTabs -->
   </suite> <!-- Suite -->
 </testng-results>

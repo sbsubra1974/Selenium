@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Failed suite [Suite]">
-  <test thread-count="5" name="Test(failed)">
+<suite thread-count="2" parallel="tests" name="Failed suite [Suite]">
+  <test thread-count="2" parallel="tests" name="HardError(failed)">
     <classes>
-      <class name="com.selenium.testng.ExecuteKeywordTest">
+      <class name="com.selenium.testng.SoftvsHardErrorTest">
         <methods>
+          <include name="hardError"/>
           <include name="beforeClass"/>
-          <include name="afterMethod"/>
-          <include name="testKeywordSheet"/>
           <include name="afterClass"/>
         </methods>
-      </class> <!-- com.selenium.testng.ExecuteKeywordTest -->
+      </class> <!-- com.selenium.testng.SoftvsHardErrorTest -->
     </classes>
-  </test> <!-- Test(failed) -->
+  </test> <!-- HardError(failed) -->
 </suite> <!-- Failed suite [Suite] -->

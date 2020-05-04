@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
+<suite parallel="tests" name="Suite" thread-count="2">
+  <test name="HardError">
+    <classes>
+      <class name="com.selenium.testng.SoftvsHardErrorTest"/>
+      <methods>
+      <include name="hardError" />
+      <exclude name="softError" />
+      </methods>    
+    </classes>
+  </test> <!-- Test -->
+ <test name="SwitchTabs">
+    <groups>
+    <run>
+      <include name="gp1"/>
+    </run>
+  </groups>    
+    <classes>
+      <class name="com.selenium.testng.SwitchTabsPageObjectTest"/> <!-- class whose group is included in the run -->    
+    </classes>
+  </test> <!-- Test -->  
+</suite> <!-- Suite -->

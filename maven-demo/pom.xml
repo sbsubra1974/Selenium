@@ -17,7 +17,13 @@
     <version>3.0.0-M1</version>
      <configuration>
         <testFailureIgnore>true</testFailureIgnore>
-    </configuration>
+    
+                    <!-- Suite testng xml file to consider for test execution -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>softerror.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
 </plugin>
 </plugins>
 </build>
