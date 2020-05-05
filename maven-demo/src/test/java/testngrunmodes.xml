@@ -5,7 +5,7 @@
     <classes>
       <class name="com.selenium.testng.SoftvsHardErrorTest"/>
       <methods>
-      <include name="hardError" />
+      <exclude name="hardError" />
       <exclude name="softError" />
       </methods>    
     </classes>
@@ -13,11 +13,21 @@
  <test name="SwitchTabs">
     <groups>
     <run>
-      <include name="gp1"/>
+      <exclude name="gp1"/>
     </run>
   </groups>    
     <classes>
       <class name="com.selenium.testng.SwitchTabsPageObjectTest"/> <!-- class whose group is included in the run -->    
     </classes>
-  </test> <!-- Test -->  
+  </test> <!-- Test -->
+<test name="FileUpload">
+    <groups>
+    <run>
+      <include name="gp1"/>
+    </run>
+  </groups>    
+    <classes>
+      <class name="com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest"/> <!-- class whose group is included in the run -->    
+    </classes>
+  </test> <!-- Test -->    
 </suite> <!-- Suite -->
