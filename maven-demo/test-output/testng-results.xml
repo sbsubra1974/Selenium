@@ -1,81 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="1" total="3" passed="1" failed="1" skipped="0">
+<testng-results ignored="3" total="4" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-05-04T21:38:35 IST" name="Suite" finished-at="2020-05-04T21:38:52 IST" duration-ms="16615">
+  <suite started-at="2020-05-05T16:29:57 IST" name="Suite" finished-at="2020-05-05T16:30:07 IST" duration-ms="10864">
     <groups>
       <group name="gp1">
-        <method signature="SwitchTabsPageObjectTest.switchTabs()[pri:0, instance:com.selenium.testng.SwitchTabsPageObjectTest@16610890]" name="switchTabs" class="com.selenium.testng.SwitchTabsPageObjectTest"/>
+        <method signature="SeleniumWebDriverUploadFilePageObjectTest.testSeleniumWebDriverUploadFilePageObject()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" name="testSeleniumWebDriverUploadFilePageObject" class="com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest"/>
       </group> <!-- gp1 -->
     </groups>
-    <test started-at="2020-05-04T21:38:35 IST" name="HardError" finished-at="2020-05-04T21:38:35 IST" duration-ms="162">
-      <class name="com.selenium.testng.SoftvsHardErrorTest">
-        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.SoftvsHardErrorTest@2df9b86]" started-at="2020-05-04T21:38:35 IST" name="beforeClass" finished-at="2020-05-04T21:38:35 IST" duration-ms="19" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- beforeClass -->
-        <test-method signature="hardError()[pri:0, instance:com.selenium.testng.SoftvsHardErrorTest@2df9b86]" started-at="2020-05-04T21:38:35 IST" name="hardError" finished-at="2020-05-04T21:38:35 IST" duration-ms="27" status="FAIL">
-          <exception class="java.lang.AssertionError">
-            <message>
-              <![CDATA[expected [true] but found [false]]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: expected [true] but found [false]
-at org.testng.Assert.fail(Assert.java:97)
-at org.testng.Assert.failNotEquals(Assert.java:968)
-at org.testng.Assert.assertTrue(Assert.java:43)
-at org.testng.Assert.assertTrue(Assert.java:53)
-at com.selenium.testng.SoftvsHardErrorTest.hardError(SoftvsHardErrorTest.java:17)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:135)
-at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:598)
-at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:174)
-at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
-at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:821)
-at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:147)
-at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
-at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
-at java.base/java.util.ArrayList.forEach(ArrayList.java:1540)
-at org.testng.TestRunner.privateRun(TestRunner.java:767)
-at org.testng.TestRunner.run(TestRunner.java:588)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
-at org.testng.SuiteRunner.access$000(SuiteRunner.java:28)
-at org.testng.SuiteRunner$SuiteWorker.run(SuiteRunner.java:425)
-at org.testng.internal.thread.ThreadUtil.lambda$execute$0(ThreadUtil.java:68)
-at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
-at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-at java.base/java.lang.Thread.run(Thread.java:834)
-]]>
-            </full-stacktrace>
-          </exception> <!-- java.lang.AssertionError -->
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- hardError -->
-        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.SoftvsHardErrorTest@2df9b86]" started-at="2020-05-04T21:38:35 IST" name="afterClass" finished-at="2020-05-04T21:38:35 IST" duration-ms="13" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- afterClass -->
-      </class> <!-- com.selenium.testng.SoftvsHardErrorTest -->
-    </test> <!-- HardError -->
-    <test started-at="2020-05-04T21:38:35 IST" name="SwitchTabs" finished-at="2020-05-04T21:38:52 IST" duration-ms="16615">
-      <class name="com.selenium.testng.SwitchTabsPageObjectTest">
-        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.SwitchTabsPageObjectTest@16610890]" started-at="2020-05-04T21:38:35 IST" name="beforeClass" finished-at="2020-05-04T21:38:42 IST" duration-ms="7414" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- beforeClass -->
-        <test-method signature="switchTabs()[pri:0, instance:com.selenium.testng.SwitchTabsPageObjectTest@16610890]" started-at="2020-05-04T21:38:42 IST" name="switchTabs" finished-at="2020-05-04T21:38:50 IST" duration-ms="7806" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- switchTabs -->
-        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.SwitchTabsPageObjectTest@16610890]" started-at="2020-05-04T21:38:50 IST" name="afterClass" finished-at="2020-05-04T21:38:52 IST" duration-ms="1336" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- afterClass -->
-      </class> <!-- com.selenium.testng.SwitchTabsPageObjectTest -->
+    <test started-at="2020-05-05T16:29:57 IST" name="SwitchTabs" finished-at="2020-05-05T16:29:57 IST" duration-ms="35">
     </test> <!-- SwitchTabs -->
+    <test started-at="2020-05-05T16:29:57 IST" name="HardError" finished-at="2020-05-05T16:29:57 IST" duration-ms="26">
+    </test> <!-- HardError -->
+    <test started-at="2020-05-05T16:29:57 IST" name="FileUpload" finished-at="2020-05-05T16:30:07 IST" duration-ms="10658">
+      <class name="com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest">
+        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" started-at="2020-05-05T16:29:57 IST" name="beforeClass" finished-at="2020-05-05T16:30:07 IST" duration-ms="10405" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeClass -->
+        <test-method signature="testSeleniumWebDriverUploadFilePageObject()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" started-at="2020-05-05T16:30:07 IST" name="testSeleniumWebDriverUploadFilePageObject" finished-at="2020-05-05T16:30:07 IST" duration-ms="188" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSeleniumWebDriverUploadFilePageObject -->
+        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" started-at="2020-05-05T16:30:07 IST" name="afterClass" finished-at="2020-05-05T16:30:07 IST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterClass -->
+      </class> <!-- com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest -->
+    </test> <!-- FileUpload -->
   </suite> <!-- Suite -->
 </testng-results>
