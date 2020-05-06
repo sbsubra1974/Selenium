@@ -4,6 +4,7 @@ com\selenium\inc\DisplayListItems.class
 com\selenium\po\AnnaUnivPageObject.class
 com\selenium\kdf\ExecuteKeywordTest.class
 com\selenium\po\GEUnsortedListCountPageObject.class
+com\selenium\po\SwitchTabsPageObjectFactory.class
 com\selenium\inc\KeywordDriven.class
 com\selenium\inc\BrowserProfileChrome.class
 com\selenium\po\YahooGoogleSwitchTabPageObject.class
@@ -16,6 +17,7 @@ com\selenium\kdf\ReadObject.class
 com\selenium\po\GoogleMapPageObjectFactory.class
 com\selenium\inc\BrowserProfileFirefox.class
 com\selenium\po\GitHubPageObject.class
+com\selenium\po\SeleniumWebDriverUploadFilePageObject.class
 com\selenium\kdf\ReadExcelFile.class
 com\selenium\po\CrosswordSortScrollTillEndPageObjectFactory.class
 com\selenium\po\GitHubPageObjectFactory.class

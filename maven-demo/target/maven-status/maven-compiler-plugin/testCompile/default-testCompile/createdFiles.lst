@@ -8,6 +8,7 @@ com\selenium\cucumber\junit\testrunner\PepperFryPageObjectFactoryTestRunner.clas
 com\selenium\GitHubPageObjectFactoryTest.class
 com\selenium\junit\testrunner\TestRunnerClass.class
 com\selenium\GitHubPageObjectFactoryBoilerPlateTest.class
+com\selenium\testng\SwitchTabsPageObjectTest.class
 com\selenium\SelectFromDropDownPageObjectFactoryListTest.class
 com\selenium\cucumber\stepdef\SampleStepDefinition.class
 com\selenium\InfiniteScrollPageObjectTest.class
@@ -24,3 +25,4 @@ com\selenium\AnnaUnivPageObjectTest.class
 com\selenium\PepperFryPageObjectFactoryTest.class
 com\selenium\GitHubPageObjectTest.class
 com\selenium\testng\GitHubPageObjectFactoryTestRemoteWebDriver.class
+com\selenium\testng\SeleniumWebDriverUploadFilePageObjectTest.class
