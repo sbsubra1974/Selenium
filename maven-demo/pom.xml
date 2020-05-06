@@ -20,7 +20,7 @@
     
                     <!-- Suite testng xml file to consider for test execution -->
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                      <!--  <suiteXmlFile>testng.xml</suiteXmlFile> -->
                         <suiteXmlFile>testngrunmodes.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
