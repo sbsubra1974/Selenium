@@ -2,27 +2,27 @@
 <testng-results ignored="3" total="4" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-05-05T16:29:57 IST" name="Suite" finished-at="2020-05-05T16:30:07 IST" duration-ms="10864">
+  <suite started-at="2020-05-05T23:41:57 IST" name="Suite" finished-at="2020-05-05T23:42:04 IST" duration-ms="7382">
     <groups>
       <group name="gp1">
         <method signature="SeleniumWebDriverUploadFilePageObjectTest.testSeleniumWebDriverUploadFilePageObject()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" name="testSeleniumWebDriverUploadFilePageObject" class="com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest"/>
       </group> <!-- gp1 -->
     </groups>
-    <test started-at="2020-05-05T16:29:57 IST" name="SwitchTabs" finished-at="2020-05-05T16:29:57 IST" duration-ms="35">
-    </test> <!-- SwitchTabs -->
-    <test started-at="2020-05-05T16:29:57 IST" name="HardError" finished-at="2020-05-05T16:29:57 IST" duration-ms="26">
+    <test started-at="2020-05-05T23:41:57 IST" name="HardError" finished-at="2020-05-05T23:41:57 IST" duration-ms="20">
     </test> <!-- HardError -->
-    <test started-at="2020-05-05T16:29:57 IST" name="FileUpload" finished-at="2020-05-05T16:30:07 IST" duration-ms="10658">
+    <test started-at="2020-05-05T23:41:57 IST" name="SwitchTabs" finished-at="2020-05-05T23:41:57 IST" duration-ms="20">
+    </test> <!-- SwitchTabs -->
+    <test started-at="2020-05-05T23:41:57 IST" name="FileUpload" finished-at="2020-05-05T23:42:04 IST" duration-ms="7217">
       <class name="com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest">
-        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" started-at="2020-05-05T16:29:57 IST" name="beforeClass" finished-at="2020-05-05T16:30:07 IST" duration-ms="10405" status="PASS">
+        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" started-at="2020-05-05T23:41:57 IST" name="beforeClass" finished-at="2020-05-05T23:42:04 IST" duration-ms="6946" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeClass -->
-        <test-method signature="testSeleniumWebDriverUploadFilePageObject()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" started-at="2020-05-05T16:30:07 IST" name="testSeleniumWebDriverUploadFilePageObject" finished-at="2020-05-05T16:30:07 IST" duration-ms="188" status="PASS">
+        <test-method signature="testSeleniumWebDriverUploadFilePageObject()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" started-at="2020-05-05T23:42:04 IST" name="testSeleniumWebDriverUploadFilePageObject" finished-at="2020-05-05T23:42:04 IST" duration-ms="212" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testSeleniumWebDriverUploadFilePageObject -->
-        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" started-at="2020-05-05T16:30:07 IST" name="afterClass" finished-at="2020-05-05T16:30:07 IST" duration-ms="0" status="PASS">
+        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.SeleniumWebDriverUploadFilePageObjectTest@4d0f2471]" started-at="2020-05-05T23:42:04 IST" name="afterClass" finished-at="2020-05-05T23:42:04 IST" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterClass -->
