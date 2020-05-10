@@ -30,7 +30,7 @@ public class SeleniumWebDriverUploadFilePageObjectTest {
   }
   @BeforeClass(groups= {"gp1"})
   public void beforeClass() throws MalformedURLException {
-  System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+  //System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
   //webdriver = new ChromeDriver();
   ChromeOptions chromeOptions = new ChromeOptions();
   webdriver = new RemoteWebDriver(new URL("http://192.168.1.9:4444/"), chromeOptions);
