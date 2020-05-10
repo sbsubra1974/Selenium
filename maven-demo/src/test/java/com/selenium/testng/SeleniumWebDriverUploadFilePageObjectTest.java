@@ -33,7 +33,7 @@ public class SeleniumWebDriverUploadFilePageObjectTest {
   System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
   //webdriver = new ChromeDriver();
   ChromeOptions chromeOptions = new ChromeOptions();
-  webdriver = new RemoteWebDriver(new URL("http://192.168.1.5:4444/"), chromeOptions);
+  webdriver = new RemoteWebDriver(new URL("http://192.168.1.9:4444/"), chromeOptions);
   pgobj= new SeleniumWebDriverUploadFilePageObject();
   actions = new Actions(webdriver);  
   

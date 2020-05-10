@@ -21,7 +21,7 @@
                     <!-- Suite testng xml file to consider for test execution -->
                     <suiteXmlFiles>
                       <!--  <suiteXmlFile>testng.xml</suiteXmlFile> -->
-                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile> <!-- give suite xmls to be run as commandline arguments for Maven Goals at runtime [their path relative to the project e.g: src/test/java/testngrunmodes.xml, src/test/java/testng.xml etc] while running POM.xml -->
                     </suiteXmlFiles>
                 </configuration>
 </plugin>
