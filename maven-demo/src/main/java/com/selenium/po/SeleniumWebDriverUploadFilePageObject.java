@@ -14,13 +14,16 @@ public class SeleniumWebDriverUploadFilePageObject {
 
 	WebElement element;
 	private static String uploadFile ="uploadfile";
-	private static String browserPage= "maven-demo\\src\\main\\resources\\com\\selenium\\webpages\\SeleniumWebdriverUploadFile.html"; //file path relative to project workspace in Jenkins
+	private static String browserPage= "http://localhost:9090/job/SeleniumTestsFromGitHub/ws/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html"; //file path relative to project workspace in Jenkins
 			//System.getProperty("user.dir")+"/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html"; //hint: drivers/chromedriver.exe
 	// Use File.separator for best cross platform or '/'. The '/' works in Java even on Windows		
 	private static int waitDuration = 10;
 
 public String pageURL() {
-		return browserPage;
+	System.out.println("user.dir:User Working Directory "+System.getProperty("user.dir"));	
+	System.out.println("user.home:User Home Directory "+System.getProperty("user.home"));
+	System.out.println("line.separator:Sequence used by operating system to separate lines in text files "+System.getProperty("line.separator"));
+	return browserPage;
 	}
 	
 public WebElement findElement(WebDriver webdriver) {
