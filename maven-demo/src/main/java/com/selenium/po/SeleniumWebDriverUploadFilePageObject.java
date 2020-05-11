@@ -28,7 +28,7 @@ public String pageURL() throws URISyntaxException {
 	System.out.println("user.home:User Home Directory "+System.getProperty("user.home"));
 	System.out.println("line.separator:Sequence used by operating system to separate lines in text files "+System.getProperty("line.separator"));
 	System.out.println("browserPage: "+browserPage);
-	System.out.println("File path: "+new File(SeleniumWebDriverUploadFilePageObject.class.getResource("/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html").toURI().getPath()));
+	System.out.println("File path: "+new File(SeleniumWebDriverUploadFilePageObject.class.getResource("/SeleniumWebdriverUploadFile.html").toURI().getPath()));
 	//URL res = YourClass.getClassLoader().getResource("/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html");
 	//System.out.println("res: "+res.toString());
 	return browserPage;
