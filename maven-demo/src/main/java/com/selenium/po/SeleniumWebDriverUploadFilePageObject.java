@@ -1,5 +1,7 @@
 package com.selenium.po;
 
+import java.net.URL;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.NoSuchElementException;
@@ -24,6 +26,8 @@ public String pageURL() {
 	System.out.println("user.home:User Home Directory "+System.getProperty("user.home"));
 	System.out.println("line.separator:Sequence used by operating system to separate lines in text files "+System.getProperty("line.separator"));
 	System.out.println("browserPage: "+browserPage);
+	URL res = getClass().getClassLoader().getResource("/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html");
+	System.out.println("res: "+res.toString());
 	return browserPage;
 	}
 	
