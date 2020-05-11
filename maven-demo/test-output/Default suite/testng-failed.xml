@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.selenium.testng.GitHubPageObjectFactoryTestRemoteWebDriver">
+      <class name="com.selenium.testng.RemoteFilePathTest">
         <methods>
-          <include name="testPageObjectFactory"/>
-          <include name="beforeClass"/>
           <include name="afterClass"/>
+          <include name="f"/>
+          <include name="beforeClass"/>
         </methods>
-      </class> <!-- com.selenium.testng.GitHubPageObjectFactoryTestRemoteWebDriver -->
+      </class> <!-- com.selenium.testng.RemoteFilePathTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
