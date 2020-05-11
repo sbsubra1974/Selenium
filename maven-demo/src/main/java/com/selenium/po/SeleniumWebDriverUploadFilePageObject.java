@@ -23,6 +23,7 @@ public String pageURL() {
 	System.out.println("user.dir:User Working Directory "+System.getProperty("user.dir"));	
 	System.out.println("user.home:User Home Directory "+System.getProperty("user.home"));
 	System.out.println("line.separator:Sequence used by operating system to separate lines in text files "+System.getProperty("line.separator"));
+	System.out.println("browserPage: "+browserPage);
 	return browserPage;
 	}
 	
