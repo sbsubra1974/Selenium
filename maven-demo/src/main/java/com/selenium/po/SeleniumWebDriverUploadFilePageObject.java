@@ -1,5 +1,7 @@
 package com.selenium.po;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.openqa.selenium.By;
@@ -21,13 +23,14 @@ public class SeleniumWebDriverUploadFilePageObject {
 	// Use File.separator for best cross platform or '/'. The '/' works in Java even on Windows		
 	private static int waitDuration = 10;
 
-public String pageURL() {
+public String pageURL() throws URISyntaxException {
 	System.out.println("user.dir:User Working Directory "+System.getProperty("user.dir"));	
 	System.out.println("user.home:User Home Directory "+System.getProperty("user.home"));
 	System.out.println("line.separator:Sequence used by operating system to separate lines in text files "+System.getProperty("line.separator"));
 	System.out.println("browserPage: "+browserPage);
-	URL res = getClass().getClassLoader().getResource("/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html");
-	System.out.println("res: "+res.toString());
+	System.out.println("File path: "+new File(SeleniumWebDriverUploadFilePageObject.class.getResource("/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html").toURI().getPath()));
+	//URL res = YourClass.getClassLoader().getResource("/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html");
+	//System.out.println("res: "+res.toString());
 	return browserPage;
 	}
 	
