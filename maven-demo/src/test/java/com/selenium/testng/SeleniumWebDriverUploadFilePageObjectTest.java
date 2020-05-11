@@ -7,6 +7,7 @@ import com.selenium.po.SeleniumWebDriverUploadFilePageObject;
 import org.testng.annotations.BeforeClass;
 
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.openqa.selenium.WebDriver;
@@ -23,7 +24,7 @@ public class SeleniumWebDriverUploadFilePageObjectTest {
 	WebDriver webdriver;
 	
   @Test(groups= {"gp1"})
-  public void testSeleniumWebDriverUploadFilePageObject() {
+  public void testSeleniumWebDriverUploadFilePageObject() throws URISyntaxException {
   
 	  webdriver.get(pgobj.pageURL());
 	  
