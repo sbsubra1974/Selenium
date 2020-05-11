@@ -14,7 +14,7 @@ public class SeleniumWebDriverUploadFilePageObject {
 
 	WebElement element;
 	private static String uploadFile ="uploadfile";
-	private static String browserPage= " http://cc366df2.ngrok.io/job/SeleniumTestsFromGitHub/ws/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html"; //file path relative to project workspace in Jenkins
+	private static String browserPage= "http://cc366df2.ngrok.io/job/SeleniumTestsFromGitHub/ws/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html"; //file path relative to project workspace in Jenkins
 			//System.getProperty("user.dir")+"/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html"; //hint: drivers/chromedriver.exe
 	// Use File.separator for best cross platform or '/'. The '/' works in Java even on Windows		
 	private static int waitDuration = 10;
