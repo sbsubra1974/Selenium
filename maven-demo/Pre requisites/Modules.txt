@@ -1,0 +1,1927 @@
+Selenium-API Javadocs: https://www.javadoc.io/doc/org.seleniumhq.selenium/selenium-api/3.141.59/index.html
+Selenium complete package Javadocs: https://www.selenium.dev/selenium/docs/api/java/overview-summary.html
+Selenium w3c webdriver specification: https://www.w3.org/TR/webdriver/
+jUnit4 Javadocs: https://junit.org/junit4/javadoc/latest/index.html
+Course content and duration samples: 
+https://www.sdlctraining.in/selenium-training-in-marathahalli/
+https://www.seleniumlabs.in/courses/selenium-with-java/
+https://www.keys2javaselenium.com/selenium-training-in-marathahalli/
+https://www.toolsqa.com/selenium-course-details/
+
+1. What are the types of testing
+- types of errors you can expect in each type of testing-unit testing, functional testing (404 not found etc), Acceptance Testing, Load Testing, Stress testing, Regression Testing
+- practical session showcasing the errors being generated
+2. iterative development methodologies - TDD, BDD: introduction
+- can we showcase and example of TDD and BDD using Selenium(jBehave, Robot framework etc)?
+- https://www.selenium.dev/documentation/en/introduction/types_of_testing/
+2. What is Selenium
+2. What are Webdriver, IDE, Grid
+3. API fundamentals-difference between libraries and REST APIs
+4. What are Eclipse, Maven, jUnit, Jenkins
+2. Set up: Eclipse, Maven, jUnit, Jenkins
+- practical session
+2. Why do we need Maven, jUnit and Jenkins
+- practical session
+3. Write a
+
+A brief about CSS, HTML, DOM etc
+Locator strategies
+- https://www.selenium.dev/documentation/en/getting_started_with_webdriver/locating_elements/
+setUp, tearDown, BeforeTest Vs BeforeClass, AfterTest Vs AfterClass
+- practical session 
+software design patterns: meaning, why do we need them
+software design patterns: types
+software design patterns: detailed explaination with an example and practical session for each
+PageFactory: concept
+PageFactory: sample
+Object Repository
+a Webdriver test case with jUnit w/o POM vs a Webdriver test case with jUnit w/ POM
+Domain Specific Language (DSL) beautifully explained: 
+- http://www.assertselenium.com/automation-design-practices/domain-specific-language/
+- https://www.selenium.dev/documentation/en/guidelines_and_recommendations/domain_specific_language/
+
+Common errors: [Note: Explaination of each of these should be via hands-on exercise] 
+1a.StaleElementReferenceException
+- using try catch or throws
+1b. What are the differences between No Such Element Exception and Element not found exception and Stale element reference exception in webdriver?
+1c. Webdriver.findElements(By by)
+Returns:
+A list of all WebElements, or an empty list if nothing matches (it does NOT throw any exception)
+It will also NOT Throw:
+NoSuchElementException - If no matching elements are found
+1d. Webdriver.findElement(By by)
+Returns:
+The first matching element on the current page
+Throws:
+NoSuchElementException - If no matching elements are found
+
+2.click action doesn't work: https://stackoverflow.com/questions/12159874/click-method-will-not-always-work
+Website: anna university. Click does not work on Departments|Centres|Academic|Research|Affiliation|University Exams due to the scrolling text under 'Events' section
+Possible Reasons:
+One of the folliwing race condition causes the issue:
+a. HTML content is rendered with the button disabled.
+b. The selenium web driver script was executed before the javascript onload event was triggered (Or finished executing). So the button.click would occur on a disabled element. And nothing would happen.
+c. Then the javascript onload event would trigger (or finish executing) and the javascript would enable the button.
+d. I looked at the page and couldn't figure out why my code wasn't working because the button appeared to be enabled upon inspection, and if I manually clicked the button, it worked.
+e. Click action not working on partially hidden buttons ('Centres', 'Academic' buttons on Anna Univ page)
+Possible Solutions:
+a. https://stackoverflow.com/questions/9161773/how-can-i-get-selenium-web-driver-to-wait-for-an-element-to-be-accessible-not-j
+b. If you know for sure that the element is present, you could try this to simulate the click - if .Click() isn't working:
+driver.findElement(By.name("submit")).sendKeys(Keys.RETURN);
+or
+driver.findElement(By.name("submit")).sendKeys(Keys.ENTER);
+c. add wait:
+WebDriverWait wait = new WebDriverWait(driver, 5);   // wait for 5 seconds
+wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//input[@value='continue'][@type='button']"))));
+driver.findElement(By.xpath("//input[@value='continue'][@type='button']")).click();
+d. Try executing Javascript: (For more details,see Java notes:- 2 below)
+Webdriver provided the javscript implementation library so that we could use javascript to perform actions on browser which are not possible with 
+webdriver native API. And in web automation testing services we encountered many such issues where we have to go beyond webdriver native API 
+and have to use javscript methods. So, using Javascript is OK. Selenium webdriver allows it(via JavascriptExecutor Interface) for difficult to work with elements
+- https://sqa.stackexchange.com/questions/36787/selenium-element-is-not-clickable-at-point-button-behind-other-element
+- https://www.javadoc.io/doc/org.seleniumhq.selenium/selenium-api/3.141.59/org/openqa/selenium/JavascriptExecutor.html
+Syntax:
+JavascriptExecutor js = (JavascriptExecutor) driver;  
+js.executeScript(Script,Arguments); 
+
+3. Mouse pointer not changing to the hand on hover interaction
+4. Mouse pointer does not physically move while executing click command via webdriver
+5. Click action not working on pop-up window button, 
+- Try JavascriptExecutor. See java notes:- 2 below
+
+6. Race conditions as given in Selenium documentation(Implicit wait and Explicit waits using WebDriverWait):-
+https://www.selenium.dev/documentation/en/webdriver/waits/
+NOTES:
+	i.  WebDriverWait wait = new WebDriverWait(webdriver,10); //wait is a WebDriverWait object
+	ii. WebElement wait = new WebDriverWait(webdriver,10).until(ExpectedConditions.elementToBeClickable(By.xpath("//a/h3"))); //wait is WebElement [object.method() can return a different data type than itself]
+
+7. org.openqa.selenium.WebDriverException: unknown error: call function result missing 'value'
+-	chromedriver needs to be upgraded
+-   element.sendKeys("Sai Baba"); results in this error. (not sure why)
+	Use sendkeys method from Actions class instead(See maven-demo: IMDBPageObjectTest.java):-
+		Actions actions = new Actions(webdriver);
+		actions.sendKeys(element, "keys").perform();
+		
+8. ExpectedConditions.textToBePresentInElement returns null pointer exception
+- You got NullPointerException because you haven't initialized wait in your LoginPage class. So there is not driver to pass to your custom ExpectedCondition.
+So, do this:-
+	WebDriverWait wait;
+	private static int waitDuration = 5;
+	wait = new WebDriverWait(webdriver,waitDuration); //you will receive a null pointer exception if you do not do this step before calling wait.until in the next step
+	wait.until(ExpectedConditions.textToBePresentInElement(element, "Sai Baba"));
+
+9. When verifying the text entered in a search field using explicit wait, you may get this error::-
+	org.openqa.selenium.TimeoutException: Expected condition failed: waiting for text ('Sai Baba') to be present in element 
+	- wait.until(ExpectedConditions.textToBePresentInElement(element, "Sai Baba")) gives this error. Use textToBePresentInElementValue instead:-
+	wait.until(ExpectedConditions.textToBePresentInElementValue(element, "Sai Baba"))
+	make sure the browser test window is maximised before entering the search text
+
+10. To get the search text entered in a search field: element.getText() will return null. Use element.getAttribute("value"), like so:
+		actions.sendKeys(element, "Sai Baba").perform();
+		wait.until(ExpectedConditions.textToBePresentInElementValue(element, "Sai Baba"));
+		assertEquals("Sai Baba",element.getAttribute("value")); //element.getText() will not work
+		
+11. element.getText() gets the visible (i.e. not hidden by CSS) text of this element[e.g ul], including sub-elements[e.g all list nodes present within ul].
+	- to perform correct assert.Equals(), you will have to extract the sub-string of the required text of the element from element.getText()
+	- also see Additional features to be explored::4 below
+	
+12. The annotation @Parameterized.Parameter is disallowed for this location
+	- make sure the following command is placed before @Test methods within test class
+	- the error will also be shown if you do not declare the parameter variable[public String movieName] after @Parameter(0)
+	@Parameter(0)
+	public String movieName;
+	
+13. Selenium will throw a null pointer exception if you run an action command and pass the send keys character sequence from a data provider object BUT w/o the following command:-
+	- @RunWith(Parameterized.class)	
+	- also do not forget to import import org.junit.runners.Parameterized for Parameterized.class
+
+14. While waiting for a frame to be available and switch over to it, Selenium might throw the following error:-
+	org.openqa.selenium.WebDriverException: unknown error: call function result missing 'value'. Like so-
+	new WebDriverWait(webdriver, 10).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("webklipper-publisher-widget-container-notification-frame")));
+	- solution is to upgrade ChromeDriver to the most recent stable version
+
+15. while executing actions.click(pgobj.happycodeAlertIcon).perform();, Selenium might throw the following error:-
+	org.openqa.selenium.json.JsonException: java.lang.reflect.InvocationTargetException
+	Solution:- https://stackoverflow.com/questions/51084484/org-openqa-selenium-json-jsonoutput-writeljava-lang-objectljava-lang-reflect-t
+	- mvn clean (to flush out previous dependencies)
+	- mvn install (to install the necessary dependencies)
+	- mvn test (to execute testsuite)	
+	
+16. even after an alert is closed and not visible, Selenium might return true when trying to locate the alert via xPath. Like so[maven-demo::org.selenium.PepperFryObjectPage:alertPopUptest()()]:-
+	//Find the frame containing the alert by its id
+	@FindBy(id="webklipper-publisher-widget-container-notification-frame")
+	WebElement happycodeFrame;
+	
+	//Find alert with a X icon(to close) as an element by its xPath
+	@FindBy(xpath="//*[@id=\"webklipper-publisher-widget-container-notification-close-div\"]/span")
+	WebElement happycodeAlertIcon; 
+	
+	//you close the alert
+	actions.click(pgobj.happycodeAlertIcon).perform();
+	
+	//check again whether the alert is present or not.
+	pgobj.happycodeFrame.isEnabled() //this will incorrectly return true instead of false even though the alert itself is not visible on the screen
+									//the reason is the xPath of the X icon is referring to the span tag which may still be present in DOM
+	pgobj.happycodeFrame.isEnabled() //do this instead: Look out for the frame element. Since the frame containing the alert is not visible, this will correctly throw the exception 'NoSuchElementException'	
+
+17. In some sites finding and element by id or CSS will not work because these are generated dynamically and so different everytime. In such cases, use XPath to locate element. Like so:-
+	- maven-demo::com.selenium.YahooGoogleSwitchTabPageObject::clickGoogleURL()
+	
+18. Thumbrules: 
+	- If actions.sendkeys() fails to enter text in the textfield even when the textfield locator is correct, check whether the textfield is located in an iFrame
+	- If you can see the text entered in the textfield, BUT unable to see the entered text in Firebug OR element.getAttribute("text") and element.getText() return null;
+	  get the attribute "value". Like so:-
+	  element.getAttribute("value")) //this will return the text entered in the textfield which is visible to your eye but not accessible or seen on Firebug DOM
+	- use element.getText() when the element text is available in DOM. Like so:-
+	<h1 jstcache="617" class="section-header-title">Harvard Business School</h1> //element(class by css).getText() will return "Harvard Business School"
+
+19. Selenium webdriver and Browser Profiles:-
+- In Chrome browser, the following error is shown:-
+Exception in thread "main" org.openqa.selenium.InvalidArgumentException: invalid argument: user data directory is already in use, please specify a unique value for --user-data-dir argument, or don't use --user-data-dir
+Solution:- Newly created custom profile in Chrome cloned from:-
+C:\\Users\\User\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 2 
+to:-
+F:\\Users\\User\\Profile 2
+and then:-
+ChromeOptions m_Options = new ChromeOptions();
+m_Options.addArguments("--user-data-dir=F:/Users/User");
+m_Options.addArguments("profile-directory=Profile 2");
+https://forum.katalon.com/t/user-data-directory-is-already-in-use/40266
+
+- Unable to type any text in Google search field opened with new custome profile: searchbox has id: fakebox-input.
+Because of this error in Chrome Browser, you will not be able to check/find/verify text search history (clock icon) in Google search field for custom profile
+For Google Chrome custom profile, there's no solution. 
+Try whether you are able to check/find/verify text search history (clock icon) in Google search field in Firefox custom profile
+https://news.softpedia.com/news/how-to-remove-the-fakebox-from-the-google-chrome-new-tab-page-524958.shtml
+https://support.google.com/chrome/thread/20243425?hl=en
+Creating new profile in Firefox:-
+https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Multiple_profiles
+text search history (clock icon) in Google search field DOES NOT APPEAR IN FIREFOX AND INTERNET EXPLORER
+
+20. While running tests in Maven via Eclipse, you may get the following error:-
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.0.0-M1:test (default-test) on project maven-demo: No tests were executed!  (Set -DfailIfNoTests=false to ignore this error.) -> [Help 1]
+- In Eclipse->Run Configurations->Maven Build->Goals, check whether it is -Dtest=<test class name> test
+- In POM.XML, under <Plugins> and <dependency> tabs, you have the latest maven sure-fire details as shown[https://stackoverflow.com/questions/36427868/failed-to-execute-goal-org-apache-maven-pluginsmaven-surefire-plugin2-12test]:-
+<plugins>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.0.0-M1</version>
+</plugin>
+</plugins>
+
+<dependency>
+  <groupId>org.apache.maven.surefire</groupId>
+  <artifactId>surefire</artifactId>
+  <version>3.0.0-M1</version>
+  <type>pom</type>
+</dependency> 
+- If you are running selenium tests as a Java Application w/o any test frameworks(e.g jUnit,TestNG), check whether the Goals is NOT -Dtest. Goals should be:-
+exec:java -Dexec.mainClass="com.selenium.inc.TypeTextInSearchBox" instead of -Dtest=TypeTextInSearchBox test
+REMEMBER: The 'test' phase we mention in Goals tests the compiled source code using a suitable unit testing framework(e.g junit or TestNG) only.
+Therefore,you can run goal -Dtest for all the classes present under maven-demo::src/test/java AND NOT for classes present UNDER maven-demo::src/main/java
+[https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html::Build Lifecycle Basics:A Build Lifecycle is Made Up of Phases]
+
+21. While running testng classes by executing testng.xml [suite xml], you may get this error:-
+org.testng.TestNGException: TestNG by default disables loading DTD from unsecured Urls. If you need to explicitly load the DTD from a http url, please do so by using the JVM argument [-Dtestng.dtd.http=true]
+You have to mention -Dtestng.dtd.http=true as the Java VM argument. Like so:-
+right click on suite.xml->Run Configurations->Test tab->Run...->select Suite->Browse...->check the required testsuite.xml
+Click on Arguments tab-> (J)VM arguments: -Dtestng.dtd.http=true
+->Apply->Run
+
+22. While running testng classes by executing testng.xml [suite xml], you may get this warning:-
+[TestNGContentHandler] [WARN] It is strongly recommended to add "<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >" at the top of your file, otherwise TestNG may fail or not work as expected.
+Include the following in your test suite.xml: <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">. Like so:-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite parallel="false" name="Suite">
+  <test name="Test">
+    <classes>
+      <class name="com.selenium.testng.SoftvsHardErrorTest"/>
+      <methods>
+      <method name="softError" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
+-BUT:INCLUDING <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> WILL RESULT IN THE FOLLOWING ERROR AS SHOWN IN 23. BELOW:-
+There was an error in the forked process org.xml.sax.SAXParseException; lineNumber: 8; columnNumber: 34; Element type "method" must be declared.
+
+23. While running testng suite.xml from Maven-POM.xml, you may get the following error:-
+There was an error in the forked process org.xml.sax.SAXParseException; lineNumber: 8; columnNumber: 34; Element type "method" must be declared.
+Comment the following in your suite.xml:- https://github.com/cbeust/testng/issues/1385
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+24. While running TestNG test classes as a group via testng.xml, you may get "null pointer exception error" and the test will fail.Like so:-
+testng.xml:-
+<suite parallel="tests" name="Suite" thread-count="2">
+  <test name="HardError">
+    <classes>
+      <class name="com.selenium.testng.SoftvsHardErrorTest"/>
+      <methods>
+      <include name="hardError" />
+      <exclude name="softError" />
+      </methods>    
+    </classes>
+  </test> <!-- Test -->
+ <test name="SwitchTabs">
+    <groups>
+    <run>
+      <include name="gp1"/>
+    </run>
+  </groups>    
+    <classes>
+      <class name="com.selenium.testng.SwitchTabsPageObjectTest"/>    
+    </classes>
+  </test> <!-- Test -->
+testng class:-
+public class SwitchTabsPageObjectTest {
+  
+	WebDriver webdriver;
+	SwitchTabsPageObjectFactory pgobj;
+	Actions actions;
+	
+  @Test(groups= {"gp1"})
+  public void switchTabs() {
+  /*
+   * 1. Open a URL in a new tab
+   * 2. Perform some assertions there
+   * 3. Switch back to the previous tab
+   * 4. Confirm switch back
+   * 5. Exit test
+   * */	 
+	 webdriver.get(pgobj.pageURL(webdriver));  //you will get null pointer exception if you run this test as part of group(gp1) 
+											  //because webdriver object will not instantiated. This is because @BeforeClass [and @AfterClass] will not be called
+											  //because they are not called by testng.xml-since no group is mentioned for them
+	 pgobj=pgobj.initialiseElements(webdriver);
+	 //perform this step only after webdriver.get()
+	 //pgobj.openNewTab(webdriver);	 
+	 
+	 actions.moveToElement(pgobj.searchField).sendKeys("Sai Baba").perform();
+	 assertEquals(pgobj.searchField.getAttribute("value"),"Sai Baba");	  
+  }
+  @BeforeClass
+  public void beforeClass() {  
+	  System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+	  webdriver = new ChromeDriver();
+	  pgobj = new SwitchTabsPageObjectFactory();
+	  actions = new Actions(webdriver);
+  }
+
+  @AfterClass
+  public void afterClass() {
+  webdriver.quit();
+  }
+}  
+-When using groups, you WILL have to make @BeforeClass and @AfterClass methods also part of the same group as the @Test method. Like so:-
+ @BeforeClass(groups= {"gp1"}) //make @BeforeClass part of same group as @Test method [gp1]
+  public void beforeClass() {  
+	  System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+	  webdriver = new ChromeDriver();
+	  pgobj = new SwitchTabsPageObjectFactory();
+	  actions = new Actions(webdriver);
+  }
+  @AfterClass(groups= {"gp1"}) //make @AfterClass also part of same group as @Test method [gp1]
+  public void afterClass() {
+  webdriver.quit();
+  }
+
+25. When running Selenium test cases as Java application (i.e w/o test frameworks) via POM.xml triggerred from Jenkins, you will get an error from Jenkins if you provide relative path for the webdriver.exe. Like so:-
+System.setProperty("webdriver.chrome.driver","drivers/chromedriver.exe"); //Jenkins will throw the error: An exception occured while executing the Java class. The driver executable does not exist: F:\\drivers\chromedriver.exe
+Provide fully qualified location for the webdriver.exe. Like so:-
+System.setProperty("webdriver.chrome.driver","F:\\Users\\User\\eclipse-workspace\\maven-demo\\drivers\\chromedriver.exe");
+
+26. When running Selenium tests cases as Java application via POM.xml triggerred from Jenkins, you may get the following error at the end of the test after webdriver.quit() command is executed.
+The test case would have executed successfuly, though. Like so:-
+WARNING] thread Thread[UrlChecker-2,5,com.selenium.inc.TypeTextInSearchBox] was interrupted but is still alive after waiting at least 14998msecs
+[WARNING] thread Thread[UrlChecker-2,5,com.selenium.inc.TypeTextInSearchBox] will linger despite being asked to die via interruption
+[WARNING] thread Thread[OkHttp ConnectionPool,5,com.selenium.inc.TypeTextInSearchBox] will linger despite being asked to die via interruption
+[WARNING] thread Thread[Okio Watchdog,5,com.selenium.inc.TypeTextInSearchBox] will linger despite being asked to die via interruption
+[WARNING] NOTE: 3 thread(s) did not finish despite being asked to  via interruption. This is not a problem with exec:java, it is a problem with the running code. Although not serious, it should be remedied.
+[WARNING] Couldn't destroy threadgroup org.codehaus.mojo.exec.ExecJavaMojo$IsolatedThreadGroup[name=com.selenium.inc.TypeTextInSearchBox,maxpri=10]
+java.lang.IllegalThreadStateException
+- I TRIED COMMENTING THE WEBDRIVER.WAITUNTIL COMMAND BUT THE ERROR WAS STILL SHOWN. 
+- JENKINS WAITS FOR FEW SECONDS AFTER WEBDRIVER.QUIT() CLOSES THE OPEN BROWSER WINDOW AND BEFORE THROWING THIS ERROR. 
+THE FINAL MESSAGE SHOWN, THOUGH IS OF SUCCESS. LIKE SO:-
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 36.880 s
+[INFO] Finished at: 2020-04-05T16:50:48+05:30
+[INFO] Final Memory: 14M/54M
+[INFO] ------------------------------------------------------------------------
+Finished: SUCCESS
+- Do this:-
+https://stackoverflow.com/questions/13471519/running-daemon-with-exec-maven-plugin-avoiding-illegalthreadstateexception
+i.e, pass the -Dexec.cleanupDaemonThreads=false command in Jenkins->Build->Goals. Like so:-
+exec:java -Dexec.mainClass="com.selenium.inc.TypeTextInSearchBox" -Dexec.cleanupDaemonThreads=false	
+
+27. When clicking checkbox, webdriver may throw this error:-
+Exception in thread "main" org.openqa.selenium.ElementNotInteractableException: element not interactable
+Exception in thread "main" org.openqa.selenium.TimeoutException: Expected condition failed: waiting for element to be clickable:By.id
+most probably if the element is not clickable, it would also be not visible: 
+hence webelement = new WebDriverWait(webdriver, 10).until(ExpectedConditions.visibilityOfElementLocated(By.id(locator))); will also fail
+- First make sure your locator is targetting <input> tag
+- Add wait and check. Like so:-
+	webelement = new WebDriverWait(webdriver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector(locator)));
+	element.click();
+- Check whether there's any overlay tag like here: https://stackoverflow.com/questions/41035615/how-to-click-webelement-under-overlay-tag-through-selenium-webdriver-java
+if yes, wait for the invisibility of the overlay
+- use Javascript to perform the click action if the waiting for the element fails : https://stackoverflow.com/questions/22793386/selenium-how-can-i-click-through-a-transparent-overlay
+Like so:-
+public WebElement findElement (WebDriver webdriver, String locator)
+try{
+webelement = new WebDriverWait(webdriver, 10).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locator)));
+}catch (Exception e){
+	WebElement wb = driver.findElement(By.id("id of element"));
+	JavascriptExecutor jse = (JavascriptExecutor)driver;
+	jse.executeScript("arguments[0].click();", wb);
+	return webelement; //although the WebDriverWait() will have failed, By.cssSelector(locator) would have found the element within the underlying DOM. So, return webelement here will return the webelemnt.
+					  //even if the element has been found in underlying DOM via By.cssSelector(locator); it will still be useless for the webdriver because Selenium cannot perform any actions on it(because webdriver waited for the element to become visible but WebDriverWwait timeout occurred and TimeoutException thrown)
+}	
+return webelement;
+}
+
+28. Sometimes, while opening a url on chrome, the webdriver may throw this error:-
+Exception in thread "main" org.openqa.selenium.WebDriverException: java.net.ConnectException: Failed to connect to localhost/0:0:0:0:0:0:0:1:12323
+- ?
+
+29. ChromeDriver v 80.0.3987.106 gives the following error:-
+[1586518418.080][SEVERE]: Timed out receiving message from renderer: 0.100
+- It is a Bug: https://stackoverflow.com/questions/60114639/timed-out-receiving-message-from-renderer-0-100-log-messages-using-chromedriver
+
+30. While running Cucumber JUnit test suite, you get the following error:-
+io.cucumber.core.gherkin.FeatureParserException: Failed to parse resource at: classpath:com/selenium/cucumber/junit/testrunner/GitHubPageObjectSetUp.feature
+io.cucumber.core.gherkin.FeatureParserException: Failed to parse resource at: file:///F:/Users/User/eclipse-workspace/maven-demo/src/main/resources/com/selenium/cucumber/features/GoogleMapPageObjectFactory.feature
+- make sure there is no space between colon Feature:,Background:,Scenario:,Scenario Outline:, Examples:
+- remove any tags for Background. Make sure no tags for Background are included in JUnit test runner class file 
+- if there is an Example keyword present, make sure the Scenario making use of the parameter from Example is marked Scenario Outline
+- if there are multiple Scenario Outline: keywords in your feature file, make sure the Examples: keyword with data follows each Scenario Outline: keyword respectively(and not at the end)
+
+31. While running Cucumber JUnit test suite, you get the following error:-
+io.cucumber.core.runner.DuplicateStepDefinitionException: Duplicate step definitions in com.selenium.cucumber.junit.testrunner.GitHubPOMStepDefinition.enterLoginCredentials(java.lang.String,java.lang.String) and com.selenium.cucumber.junit.testrunner.GitHubPOMStepDefinition.enterLoginCredentials(java.lang.String,java.lang.String)
+io.cucumber.core.runner.DuplicateStepDefinitionException: Duplicate step definitions in com.selenium.cucumber.junit.testrunner.GitHubPOMStepDefinition.enterLoginCredentials(java.lang.String,java.lang.String) and com.selenium.cucumber.junit.testrunner.GitHubPOMStepDefinition.enterLoginCredentials(java.lang.String,java.lang.String)
+- make sure each scenario has a distinct tag. Make sure these dictinct tags are included in the Cucumber JUNit test runner (why scenario tags need to be distinct?)
+- @When and @And tags have same text.Like so:-
+  @When ("^I enter the \"(.*)\"$") 
+  @And("^I enter the \"(.*)\"$")
+  public void enterLoginCredentials(String loginName, String loginPwd) {
+	  	actions.sendKeys(pgobj.loginFieldbyId, loginName).perform();
+		actions.sendKeys(pgobj.pwdFieldbyId, loginPwd).perform();  
+  }
+ Corresponding entry from features file is as follows:-
+	Scenario Outline: Validate login credentials
+   	Given Login field is present in PUT
+  	And Password field is present in PUT
+  	When  I enter the <userID>
+  	And I enter the <pwd>
+  	Then I verify the entered <userID> in Login field
+  	And I verify the entered <pwd> in Password field  
+
+32. Even after no parse errors, Cucumber tests may not run. Like so:-
+0 Scenarios
+0 Steps
+0m0.004s
+-each scenario should a distinct tag names (to avoid this, you may tag the feature and call it: all scenarios under it will be run by default)
+-feature file is not found. Give features file path @CucumberOptions(feature={"src/test/java/com/selenium/cucumber/junit/testrunner/GitHubPageObjectSetUp.feature"})
+-step definition file is not found. Give step definition file path in @CucumberOptions(glue={project.package.stepdefinitionfilepkg})
+-@tag different for Feature Gherkin keyword across features files. Same @tag for different features will result in this error
+You cannot duplicate @tag for more than one Feature keyword across feature files present in the SAME folder
+even, tags for scenarios within the feature can be duplicated across features
+-when running multiple scenarios and tags, make sure you mention them in the JUnit runner file. Like so:-
+package com.selenium.cucumber.junit.testrunner;
+import org.junit.runner.RunWith;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+
+@RunWith(Cucumber.class) 
+@CucumberOptions(tags= {"@GoogleMapPageObjectFactory","@test1,@test2"}, //Scenarios tagged with @test1 and @test2 will be run. But, these tags should not be present as duplicates across feature files
+features= {"src/main/resources/com/selenium/cucumber/features/GoogleMapPageObjectFactory.feature"},
+glue= {"com.selenium.cucumber.stepdef"}
+) 
+public class GoogleMapPageObjectFactoryTestRunner {
+
+}
+
+33. The Cucumber step definition does not run all steps given under Background: in features file. Like so:-
+	Your feature file contents are:-
+	Background: setUp
+	Given ChromeDriver is available
+    And GitHubPageObjectTest page object is created 
+    And action object is created
+    And webDriverWait object is created
+	
+	Your corresponding step definition file content are:-
+	  @Given("^ChromeDriver is available$") //Background
+	  public void setUp() throws Throwable {      
+	  System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe"); 
+		webdriver = new ChromeDriver();
+		pgobj = new GitHubPageObjectFactory();
+		actions = new Actions(webdriver);
+		wait = new WebDriverWait(webdriver,waitDuration);
+   }
+  To make the setUp() in step definition run all commands, do either of the two:-
+  i.  In step definition file, create seperate @Given functions for each of the AND statements of Background:
+  ii. Remove all AND statements and keep only Given statement in the feature file. The updated feature file and step definition file contents will be so:-
+  	Updated feature file content:-
+	Background: setUp
+	Given ChromeDriver is available
+    
+	Updated step definition file contents:-
+	@Given("^ChromeDriver is available$") //Background
+	  public void setUp() throws Throwable {      
+	  System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe"); 
+		webdriver = new ChromeDriver();
+		pgobj = new GitHubPageObjectFactory();
+		actions = new Actions(webdriver);
+		wait = new WebDriverWait(webdriver,waitDuration);
+
+34. This is not allowed. Like so:-
+	Cucumber Feature file:
+	Scenario Outline: Validate login credentials
+   	Given Login field is present in PUT
+  	And Password field is present in PUT
+  	When  I enter the user id <userID>
+  	And I enter the password <pwd>
+  	Then I verify the entered <userID> in Login field
+  	And I verify the entered <pwd> in Password field 
+  
+  Cucumber Step Definition file:
+  @Given("^Login field is present in PUT$")
+  @And ("^Password field is present in PUT$")
+  public void loginFieldsAreVisible() {
+	  
+  }  
+  @When ("^I enter the user id \"(.*)\"$")
+  @And("^I enter the password \"(.*)\"$")
+  public void enterLoginCredentials(String loginName, String loginPwd) {
+	  	actions.sendKeys(pgobj.loginFieldbyId, loginName).perform();
+		actions.sendKeys(pgobj.pwdFieldbyId, loginPwd).perform();  
+  }  
+  @Then("^I verify the entered \"(.*)\" in Login field$")
+  @And("^I verify the entered \"(.*)\" in Password field  $")
+  public void verifyCredentials(String loginName, String loginPwd){
+	  	wait.until(ExpectedConditions.textToBePresentInElementValue(pgobj.loginFieldbyId, loginName));
+		wait.until(ExpectedConditions.textToBePresentInElementValue(pgobj.pwdFieldbyId, loginPwd));
+		assertEquals(pgobj.loginFieldbyId.getAttribute("value"),loginName);
+		assertEquals(pgobj.pwdFieldbyId.getAttribute("value"),loginPwd);
+  }	
+
+35. While running Cucumber JUnit test runner, you get the error: "You can implement missing steps with the snippets below:"
+this error is shown when
+ i.)Cucumber is not able to find the Step Definition class file [https://cucumber.io/docs/community/faq/::Cucumber says my steps are undefined, but I have implemented step definitions!]
+ -By default in the Cucumber Junit test runner file, you give the path of ONLY the feature file. 
+ -By default Cucumber-JVM will search in the package (or sub-packages) of the runner class. Like so:-
+ package com.selenium.cucumber.junit.testrunner;
+ import org.junit.runner.RunWith;
+ import io.cucumber.junit.CucumberOptions;
+ import io.cucumber.junit.Cucumber;
+
+ @RunWith(Cucumber.class) 
+ @CucumberOptions(tags= {"@feature","@test2"},
+ features= {"src/main/resources/com/selenium/cucumber/features/GitHubPageObjectFactory_second.feature"}
+ ) 
+ public class GitHubPageObjectFactoryTestRunner { }
+ -If the step definition class file is located in a different package,
+ you’ll need to make sure to specify the path to your step definitions (glue path) correctly. Like so:-
+ @CucumberOptions(glue = {"<package>", "<package>", "<etc>"})
+ public class RunCucumberTest{}
+ 
+ ii)The step definition class file doesn't have corresponding keywords and definition implemented 
+ iii.)There is a mismatch in step definition spelling(including the CAPS and lowercase) between the feature file and step definition class file
+
+36. While running Cucumber JUnit test runner, you get the following errors:-
+-io.cucumber.core.exception.CucumberException: Could not create a cucumber expression for
+-io.cucumber.core.exception.CucumberException: Could not create a cucumber expression for 'I enter the user id {String}'.
+It appears you did not register parameter type.
+check the cucumber expression has the right syntax for the data type. As you can see, in the example, we have given {String} instead of {string} in the cucumber expression 'I enter the user id {String}' 
+
+37.While running Cucumber JUnit test runner, you get the following error:-
+java.lang.IllegalArgumentException: The glue path contained invalid identifiers
+
+You need to give the package name where the step definition class file resides for glue. 
+DO NOT give the full path of the Step definition class file. The following will give this error:-
+package com.selenium.cucumber.junit.testrunner;
+import org.junit.runner.RunWith;
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.junit.Cucumber;
+
+@RunWith(Cucumber.class) 
+@CucumberOptions(tags= {"@feature","@test2"},
+features= {"src/main/resources/com/selenium/cucumber/features/GitHubPageObjectFactory_second.feature"},
+glue= {"src/test/java/com/selenium/cucumber/stepdef/GitHubPageObjectFactoryStepDefinition.java"}
+) 
+public class GitHubPageObjectFactoryTestRunner { }
+
+Replace the glue path with the pacakage where the step definition class file resides.Like so:-
+package com.selenium.cucumber.junit.testrunner;
+import org.junit.runner.RunWith;
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.junit.Cucumber;
+
+@RunWith(Cucumber.class) 
+@CucumberOptions(tags= {"@feature","@test2"},
+features= {"src/main/resources/com/selenium/cucumber/features/GitHubPageObjectFactory_second.feature"},
+glue= {"com.selenium.cucumber.stepdef"}
+) 
+public class GitHubPageObjectFactoryTestRunner { }
+
+38. Cucumber may give this error: 
+io.cucumber.core.runner.DuplicateStepDefinitionException: Duplicate step definitions in com.selenium.cucumber.stepdef.GitHubPageObjectFactoryStepDefinition.openPageInitialise() and com.selenium.cucumber.stepdef.DuplicateStepDefinition.openPageInitialise()
+This means:-
+i.)More than one step definition class files exist within the same package and with same step definitions. This is not allowed. Because Cucumber searches for the step definition in ALL step definition class files within the same package irrespective of names of step definition class files
+-You cannot have more than one step definition class file with the same step definitions. EVEN IF THE TAGS YOU USE TO EXECUTE ARE DIFFERENT.
+Q: Doesn't this add to limitation?Why even with diffrent features this is not allowed?
+Q: Will it work if the duplicate step definition class files are kept in seperate packages and then accessed?
+A: NO. IT WILL NOT WORK EVEN IF YOU KEEP THE DUPLICATE STEP DEFINITION CLASS FILES IN SEPERATE PACKAGES. Duplicate step definition class files cannot exist in whatever packages you include in Glue keyword in the Cucumber test runner
+Like so:-
+package com.selenium.cucumber.junit.testrunner;
+import org.junit.runner.RunWith;
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.junit.Cucumber;
+
+@RunWith(Cucumber.class) 
+@CucumberOptions(tags= {"@feature","@test3"},
+features= {"src/main/resources/com/selenium/cucumber/features/GitHubPageObjectFactory_second.feature"},
+glue= {"com.selenium.cucumber.stepdef","com.selenium.cucumber.stepdef2"} //THIS WILL NOT WORK
+) 
+public class GitHubPageObjectFactoryTestRunner { }
+
+39. Cucumber 5.x.x not executing multiple Scenario Outlines. Downgrading to Cucumber 4.8.1 works fine.
+However, even after downgrading to Cucumber 4.8.1, Scenario Outlines do not work with JUnit 4.13.
+Question raised in Cucumber Google groups mailing list and StackOverflow on 17th Apr 2020
+BEST PRACTICES:-
+1. Do NOT place any When and Then keywords in Background. All actions and verifications to be done by the user(i.e When and Then) should be part of Scenarios
+2. Place your assertxxx() statements in Then keyword
+3. Name the Feature keyword as close to the Page Object as possible
+4. Keep @tag for Feature keyword different for features files if the feature files are present in the same folder. 
+Same @tag for Feature keyword will result in the following error:-
+0 Scenarios
+0 Steps
+0m0.001s
+However, tags for scenarios within the feature can be duplicated across features files present in the same folder
+5. In Feature files, keep all step definitions and Descriptions as close to the Page Object as possible. 
+AVOID KEEPING THEM GENERIC WHICH MAY CLASH WHILE EXECUTING THE GENERIC STEP DEFINITION FROM A DIFEFRENT FEATURE FILES FOR A DIFFERENT PAGE OBJECT.
+So, instead of doing this:-
+@feature
+Feature: GitHubPageObjectTest
+
+Background: setUp
+	Given ChromeDriver is available
+	And GitHub PUT is opened
+	And all page elements are initialised
+     
+@test3
+Scenario: Initialise Page Object
+    When   Password field is present in PUT
+    Then   Then I verify the entered "<pwd>" in Password field
+
+	Do this:-
+@feature
+Feature: GitHubPageObjectTest
+
+Background: setUp
+	Given ChromeDriver is available //keep it as such. This code will be same for all POs But make sure the PO object is not created in this step definition. If so, make this too PO specific
+	And GitHub PUT is opened		//this is ok. Very specific to the GitHub PO
+	And all GitHub page elements are initialised //this now becomes specific to GitHub PO
+     
+@test3
+Scenario: Initialise GitHub Page Object //this now becomes specific to GitHub PO
+    When   Password field is present in GitHub Page //this now becomes specific to GitHub PO
+    Then   Then I verify the entered "<pwd>" in Password field in GitHub Page //this now becomes specific to GitHub PO
+
+-Q: But, how does Cucumber know WHICH step definition class file to pick from the package given in glue?
+A: Technically it doesn’t matter which step definitions you put in a file. or how many step definition class files you have.
+Cucumber will search for a feature corresponding to that step definition in ALL step definition class files located in the directory from where Cucumber is run (Default)
+OR ALL step definition files (i.e ALL .java files)located in the package as given in the Glue.
+Therefore, the first primary keyword in a Gherkin document MUST ALWAYS be 'Feature' [followed by a : and (optionally)a short text that describes the feature]
+https://cucumber.io/docs/gherkin/step-organization/ ::How Cucumber finds your features and step definitions, Grouping step definitions
+
+40.Following command will not work while running JUnit test calss from Maven-Pom.xml for jUnit test class [Because JUnit test calss does not have a main]. Like so:-
+exec:java -Dexec.mainClass="com.selenium.inc.IMDBPageObjectTest"
+You will get the error: "Class not Found"
+
+****************************** 
+Differences between the same methods in different interface/classes:-
+1. Difference between Webdriver.findElement(By) and WebElement.findElement(By)
+WebDriver represents the browser
+WebElement represents a particular DOM node (a control, e.g. a link or input field, etc.)
+Once you have a reference to a web element that’s been “found”, you can narrow the scope of your search by using the same call on that object instance:
+WebElement cheese = driver.findElement(By.id("cheese"));
+WebElement cheddar = cheese.findElement(By.id("cheddar"));
+https://www.selenium.dev/documentation/en/getting_started_with_webdriver/locating_elements/
+
+2. Difference between WebElement.click() Vs Actions.click() [Note: WebElement.click() is the preferred option]
+https://stackoverflow.com/questions/23295483/selenium-webdriver-click-vs-action-click-whats-the-difference
+https://groups.google.com/forum/#!topic/selenium-users/_w3T4cPwQP0
+Actions.click() is useful when used with moveToElement(org.openqa.selenium.WebElement, int, int) or moveByOffset(int, int).
+With Actions, you can use methods like Actions.doubleClick() etc
+Well, it’s true that web driver command provides a fairly sufficient set of commands to perform basic interactions. But, in many cases, these basic interactions are not enough, automation script needs to perform more complicated interactions than these.
+Let’s consider a case where a user needs to perform a double-click on the element, or maybe Drag-n-Drop the element or even emulate user action of entering uppercase letters in the textbook using Shift+Letters. These are the cases where some advance API methods are required which can handle complex interactions. And that is the whole purpose of having Actions class in place.
+Actions class is the only choice for emulating Keyboard and Mouse interactions-"Actions class is the user-facing API for emulating complex user gestures. Use this class rather than using the Keyboard or Mouse directly."
+https://www.toolsqa.com/selenium-webdriver/actions-class-in-selenium/
+
+3. Difference between Interface Action and Class Actions both present in package org.openqa.selenium.interactions?
+- https://www.toolsqa.com/selenium-webdriver/actions-class-in-selenium/
+Actions class implements the builder pattern: Builds a CompositeAction containing all actions specified by the method calls.
+Action class is only used to represent the single user interaction to perform the series of action items built by Actions class. It contains only one method which is one of the most widely used methods: perform().
+Steps to use Actions class to emulate complex user interactions:-
+	1. 	Actions class & Action interface
+		import org.openqa.selenium.interactions.Actions;
+		import org.openqa.selenium.interactions.Action;
+	2.	Generate a sequence of these actions but these actions are performed on a webElement
+		WebElement element = driver.findElement(By strategy to identify element);	
+	3.	Instantiate Actions class
+		Actions actions = new Actions(webdriver object);
+	4.	Generate actions sequence: Complex action is a sequence of multiple actions like in this case sequence of steps are:
+		*Pressing Shift Key
+		*Sending desired text
+		*Releasing Shift key
+		actions.keyDown(element, Keys.SHIFT);
+		actions.sendKeys(“TextToBeConvertAndSendInUpperCase”);
+		actions.keyUp(Keys.SHIFT);
+		OR using builder pattern, you can club all actions together as:
+		actions.keyDown(element, Keys.SHIFT).sendKeys(“TextToBeConvertAndSendInUpperCase”).keyUp(Keys.SHIFT);
+	5. 	Build the actions sequence:Build method generates a composite action containing all actions so far which are ready to be performed.
+		Action action = actions.build();
+		Notice that the build method returns the object type of Action. It is basically representing Composite Action which we built from a sequence of multiple actions.
+	6.	Perform actions sequence:
+		action.perform();
+		NOTES: 
+		i.If you do not want to utilise composite action using the Action interface, you can build and perform for EACH of the actions using the Action interface. Like so:
+		actions.keyDown(element, Keys.SHIFT).build().perform; //using perform method of action interface (because actions.build() will return an Action object)
+		actions.sendKeys(“TextToBeConvertAndSendInUpperCase”).build().perform; //using perform method of action interface (because actions.build() will return an Action object)
+		actions.keyUp(Keys.SHIFT).build().perform; //using perform method of action interface (because actions.build() will return an Action object)
+		ii. build() is present in ONLY in Actions Class. perform() is present in BOTH Action interface and Actions class
+		iii. Catch in Actions Class:-
+		the Perform method is also available in the Actions class. 
+		It means that it can be used directly as well without making the use of Action Interface like below:
+		actions.keyDown(element,Keys.SHIFT).sendKeys(TextToBeConvertAndSendInUpperCase).keyUp(Keys.SHIFT).perform();
+		This is the charm of the builder pattern, build method is called inside the perform method automatically.
+		iv. spot the difference:-
+		Actions actions=new Actions(driver);
+        actions.moveToElement(giftcard).click().build().perform(); //perform() is called from Action Interface [build() is called from Actions class but returns an Action type]
+		actions.sendKeys(element, "Sai Baba").perform(); //perform() is called from Actions class
+
+4. Difference between Webelement.sendKeys[https://www.javadoc.io/static/org.seleniumhq.selenium/selenium-api/3.14.0/org/openqa/selenium/WebElement.html#sendKeys-java.lang.CharSequence...-] 
+and Actions.sendKeys?
+Actions.sendKeys differs from calling WebElement.sendKeys(CharSequence...) on the active element in two ways:
+The modifier keys included in this call are not released.
+There is no attempt to re-focus the element - so sendKeys(Keys.TAB) for switching elements should work.
+	NOTES:
+		i. Click() and SendKeys() are the ONLY two methods that are common between Webelement interface and Actions class
+		ii. submit() is available ONLY in Webelement Interface and NOT in Actions class
+		
+5. Difference between creating webdriver instace in the following two ways:-
+	ChromeDriver driver = new ChromeDriver(options);
+	WebDriver driver = new ChromeDriver(options);
+	- The first creates the driver from the ChromeDriver Class and the second from WebDriver interface. The chosen one should be the second one
+	- Question is how can we instantiate an interface(as given in the second option above)? And if yes, why do we do it?
+	For answer, look here: https://stackoverflow.com/questions/16750772/instantiating-interfaces-in-java
+	Some more explaination of why do we do it:-
+	If you do not want to make use of additional functionalities provided by the Implementing class [e.g for ChromeDriver class:getLocalStorage(),
+	getNetworkConnection(),getSessionStorage(),getTouch() etc], you can use the second option.
+	The first option ensures BOTH WedDriver interface methods and methods of implementing class (i.e ChromeDriver) are made available 
+
+6. 	Difference between handling alerts using Alert interface and Actions class
+
+7. 	Difference between Element.getAttribute("text") and Element.getText()
+	- Element.getAttribute("text"):
+	this method will return the value of the property with the given name, if it exists. If it does not, then the value of the attribute with the given name is returned. If neither exists, null is returned.
+	- Element.getText():
+	Get the visible (i.e. not hidden by CSS) text of this element, including sub-elements.
+	Example: [maven-demo::com.selenium.DragandDropPageObjectTest::testDragAndDropPageObject()] :-
+	After the drag and drop operation, targetContentElement.getAttribute("text") will return NULL although
+	targetContentElement.getText() will return the value of the dropped element ['5000'] 
+
+8.	Difference between switching browser tab using getWebDriver().navigate().back() and webdriver.switchTo().window(tabs.get(0))
+	- use getWebDriver().navigate().back() if the new webpage opens in the SAME tab and you wish to navigate back to the earlier page
+	- use webdriver.switchTo().window(tabs.get(0)) if the new webpage opens in a new tab and you wish to navigate back to earlier tab. Like so:-
+	ArrayList<String> tabs = new ArrayList<String> (webdriver.getWindowHandles());
+	webdriver.switchTo().window(tabs.get(0)).getTitle());
+	See maven-demo::com.selenium.YahooGoogleSwitchTabPageObjectTest::testYahooGoogleSwitchTabPageObject()
+
+****************************	
+Additional features to be explored:-	
+1. Data Providers
+- within test class
+- external data sources
+
+2. Find elements:Web page scrolling
+Web Page Scrolling: maven-demo::com.selenium.InfinitePageScrollObject::findElementToScrollTo
+	- has to be done with JavaScriptExecutor class https://www.guru99.com/scroll-up-down-selenium-webdriver.html
+Scroll to the end of the page
+	- has to be done with JavaScriptExecutor class https://www.guru99.com/scroll-up-down-selenium-webdriver.html
+
+3. Drop down selectors/deselect
+	- for jQuery auto complete AJAX text field element, to fetch the value of the entered text, use textfieldelement.getAttribute("value") and not textfield.getText()
+	- Like so:-
+	maven-demo::com.selenium.SelectFromDropDownPageObjectFactoryListTest
+	- when using PageObject Factory for dynamic (Ajax) elements, using PageFactory.initilise with @FindBy will NOT work since the Ajax element is not available in the DOM at that time.
+	you will have to use a mix of PageFactory with @FindBy[for static elements in the page] and webdriver.findElement(By)[for dynamic Ajax element in the same page]
+	Also see: https://stackoverflow.com/questions/43037349/mapping-dynamic-elements-with-findby-annotations-and-pagefactory
+
+4i. Loop through li elements inside a ul(search for movies in IMDB site, maven-demo:com.selenium.IMDBPageObject::waitAndFindMovieList(), testclickMovieName()):-
+- https://stackoverflow.com/questions/47436151/how-to-loop-through-only-li-elements-inside-a-ul
+- element.getText()); //Gets the visible (i.e. not hidden by CSS) text of this element, including sub-elements
+	Q: In Selenium, is it possible to fetch text of only the main element or only of sub elements? If not why?
+	A: NO. Because your XPath expressions and CSS selectors have to point to an actual element.
+	possible workarounds: https://stackoverflow.com/questions/28945692/how-to-get-text-from-parent-element-and-exclude-text-from-children-c-selenium
+4ii. Looping through unsorted list in Google Search Page[com.selenium.inc::DisplayListItems]:-
+- [Incase unsortedList.findElements(By.tagName("li") doesn't return List<WebElement>]find all the SPAN elements[findElements(By.tagName("span")] in the table because the text for the suggestions are in the SPAN tags	
+- Search History list items(with clock icon:https://www.androidpolice.com/2017/09/21/google-testing-new-search-suggestions-design-looks-cluttered/) 
+WILL NOT appear when the Google Search Page is opened by Selenium Webdriver(even if you use Default Chrome profile):-
+https://stackoverflow.com/questions/56344560/selenium-point-towards-default-chrome-session
+-> BUT TRY loading customized Chrome Profile and verify whether search history is getting stored for subsequent webdriver browsing sessions
+- fakebox-input issue preventing Search History(clock icon) to be shown in search field in Google Chrome Browser for custom profile 
+https://news.softpedia.com/news/how-to-remove-the-fakebox-from-the-google-chrome-new-tab-page-524958.shtml
+https://support.google.com/chrome/thread/20243425?hl=en
+- verify whether you are able to view/validate Google search history(clock icon) in Firefox Cutsom profile [YOU CANNOT view Google search history(clock icon) in Firefox or Internet Explorer]
+https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Multiple_profiles
+
+
+5. Multiple selectors: checkboxes/deselect, text fields etc 
+
+6. Capturing screenshots with WebDriver
+
+7. Testing Drag and drop,copy paste with Selenium[maven-demo::com.selenium.DragAndDropPageObject]
+-	For a webpage containing unsortedlist of buttons with same class, id and text, Selenium will pick the first one that is finds. That is fine with us. 
+Like so[maven-demo::com.selenium.DragAndDropPageObject::findSourceElement()]:-	
+private static String sourceElementbyXPath = "//*[@id=\"fourth\"]/a"; //here there are two buttons with same text ['5000'], class and id. Selenium will find teh first one that it finds in the unsorted list
+-	To assert the target text after drag and drop operation, use Element.getText() and not Element.getAttribute("text")
+See '7. Difference between Element.getAttribute("text") and Element.getText()' above
+
+8. Testing mouse over with Selenium: 
+- mouse hover text should be tested as tool tip text
+- https://www.guru99.com/verify-tooltip-selenium-webdriver.html
+- Scenarios:-
+Scenario 1: Tooltip is implemented using the "title" attribute::
+	- Most common.The tool tip is always for an image (icon) 
+	- No need to move the mouse pointer to the icon/image. Simple get the attribute "title" of the image
+Scenario 2: Tooltip is implemented using a jQuery plugin.
+
+9. 4 different types of important web elements like Web Tables, Frames,Alerts and Dynamic elements 
+	Frames:-
+	How to click a button created using <span> tag for Selenium webdriver? (e.g Pepperfry website)
+	- https://stackoverflow.com/questions/38725120/how-to-click-a-button-created-using-span-tag-for-selenium-webdriver
+	Alerts:-
+	You HAVE to switch over to the Alert to perform any action (click to dismiss etc) on it. Two ways of switching over to Alert:-
+		i. Wait for for the frame containing the alert to show up. Then click on the close icon present on the alert (maven-demo::com.selenium.PepperFryPageObjectTest:alertPopUptest()) 
+		In this, there are no OK button to cancel the alert:-
+		new WebDriverWait(webdriver, 10).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("webklipper-publisher-widget-container-notification-frame")));
+		actions.click(pgobj.happycodeAlertIcon).perform();
+		ii. You access the OK button on the alert (the OK button is accessible via xPath), then switch over to it and perform cancel operation. No Actions methods are called:-
+		// clicking on try it button
+        driver.findElement(By.xpath("//button[contains(text(),'Try it')]")).click();
+        Thread.sleep(5000);
+ 
+		// accepting javascript alert
+        System.out.println(driver.switchTo().alert().getText());
+        driver.switchTo().alert().accept();
+	For closing popups such as YouTube popup, see maven-demo::com.selenium.DragandDropPageObjectTest::testDragAndDropPageObject()
+	- to perform and further actions on the parent DOM after closing the popup, you HAVE to switch back to it. Like so:-
+	webdriver.switchTo().defaultContent();
+		
+
+10. Annotations (jUnit,Selenium)
+- @FindBy(xpath="") [org.openqa.selenium.support.FindBy]
+- @Rules [org.junit]
+
+11. browser page actions - move back, move forward,open new page in a tab-validate the new page etc
+	- maven-demo::com.selenium.YahooGoogleSwitchTabPageObjectTest::testYahooGoogleSwitchTabPageObject()
+
+12. Selenium support package documentation: https://www.selenium.dev/selenium/docs/api/java/overview-summary.html
+
+13. Selenium explicit (wait.until) waits and implicit waits
+	
+14. Page loading strategy: https://www.selenium.dev/documentation/en/webdriver/page_loading_strategy/
+
+15. Types of Framework : Fundamental Concept of Datadriven, Keyword Driven & Hybrid FW
+
+16. Executing Automation Test Cases in multiple browsers Sequentially and parallelly
+
+17. Creating test suites
+	- maven-demo::com.selenium.testrunner::TestRunnerClass()
+
+18. Write DSL methods
+	
+19. Convert POM class you have created[maven-demo::AnnaUnivPageObject,IMDBPageObject,GitHubPageObject] to Page Factory class
+
+20. Keyword driven framework[https://www.guru99.com/creating-keyword-hybrid-frameworks-with-selenium.html]
+
+21. 
+* Selenium and environment variables:
+	Running tests in different environments[AWS,Citrix VPN etc]:
+	1. Use combination of properties file/Java owner library to read properties file via annotations/Grid/remote webdriver
+	2. https://www.vinsguru.com/selenium-webdriver-how-to-execute-tests-in-multiple-environments/
+	3. https://itnext.io/how-to-run-automation-scripts-in-multiple-environments-abc39d11aa20?gi=485e23b91bda
+* Challenges in implementing wedriver/keyword framework in CI/CD
+* Challenges in storing properties and files in shared drive and database
+* How does Selenium move from page to page
+* Simple test class without page object model-OK
+* Simple test class with keyword driven framework (read from excel), what if a page changes=>keyword vs POM impact, keyword:mainly to seperate testing steps find and manage resuable elements?, POM: separate testing steps from Page elements and finding elements(non-resuable) 
+* Simple test class with modular driven framework:
+	Maintaining an object repository increases the modularity of framework implementation.[https://www.guru99.com/object-repository-selenium.html]
+	POM is better than modular(object repository)/keyword driven approach "best practices for object repository": 
+	https://sqa.stackexchange.com/questions/8776/how-and-why-create-an-object-repository-for-element-locators-in-a-selenium-pro
+	https://www.edureka.co/community/48444/what-is-object-repository-in-selenium-webdriver
+	One of the important aspects when planning your tests (or choosing a framework for your project) is to consider where and how you want your objects to be stored and how they have to be made available to the tester.
+	https://www.softwaretestinghelp.com/qtp-tutorial-7-how-qtp-identify-objects-uniquely/
+	Excel sheet with keywords + Object repo + @DataProviders is Hybrid Approach
+	Excel sheet with keywords + Object repo is Keyword Driven Approach
+	Object repo is modular approach
+	can we have more than one object repository for the same project(e.g maven-demo)? How do we group object repositories
+	how dow we deal with same object appearing more than once on the same page(how do we represent each of them in the excel and properties file-property file takes only one key value pair per entry)?
+	how can we 'reuse' objects from a repository? Is it possible for the same page? Is it possible for different page?
+	how do we identify same element appearing more than once with the same object and object type(albiet with different object type value-say id1, id2)
+	Object repo suitable for entriprise apps which have less nos. of different object types and the probablity of same element appearing more than once is higher-both in the same page and across pages?
+	POM is suitable for websites with rich and varied UI elements(e.g alerts, video layovers, animations, text, fields, frames etc). Where same UI type is less repeated?
+	Keyword/object repository driven framework is for AUT with following characteristics:-
+		1. Number of elements remain less and do not increase in greater number overtime (e.g enterprise apps)
+		2. Similar elements with same object type(but different object type values) are clearly differentiated by their labels on UI(e.g loginButton, pwdButton)
+	Page object model(no object repository) is better suited for all kinds of AUT because:-
+		1. POM pages have the locators in each page object class as By variables or use page factory which declares the web elements and their locators together
+		2. Page object classes with object repository and with no locator variables break the class encapsulation principle (methods of a class should execute on variables of a class)
+		3. object repositories do not work with page factory
+		A note: Page Factory model doesn't work for dynamically generated elements (e.g ul, li) because page initialisation happens only at startup. We cannot reinitialise the page with dynamic elements. For such pages, we need to have POM locators and find functions created within the same page class
+	Object Repository is suited for QTP:-
+	https://www.softwaretestinghelp.com/qtp-tutorial-7-how-qtp-identify-objects-uniquely/
+* Simple test class with hybrid driven framework
+* Simple test class with actions on elements-OK
+* Simple test class with Thread.sleep on elements-OK
+* Simple test class with Browser profile-OK(Certificate pending)
+* File Upload In Selenium – 3 Techniques:- https://www.techbeamers.com/handle-file-upload-selenium-webdriver/
+	i.SendKeys to Handle File Upload
+	ii.AutoIt Script to Handle File Upload
+	iii.Jacob API to Handle File Upload
+
+* Commands for Text-boxes, Buttons-OK
+* Commands for Radio buttons, Check-boxes-OK
+* Commands for Select tag/Lists/Drop-downs, Tables-OK
+* Commands to deal with Alerts, Popups and Multiple Windows-OK
+
+22. Running Selenium tests automatically from GitHub Repository, Jenkins(post GitHub code commit)[GitHub-Jenkins pipeline]:
+- https://www.guru99.com/selenium-github.html
+- https://guides.github.com/introduction/flow/ => Understanding GitHub workflow 
+- GitHub repository URL: https://github.com/sbsubra1974/SeleniumTestScripts.git
+- To fetch an existing Keywordsheet from GitHub, make changes and then commit it back to GitHub, follow these steps:-
+1. Clone the repository from GitHub to local drive
+Open Git Bash window => [i.open command prompt. ii.Type: cd C:\Program Files\Git iii.git-bash.exe <A new GIT Bash window will be opened>]
+$ cd /f/Users/User/git/ [location in local drive where you want to put the Keywordsheet.xlsx]
+$ git clone https://github.com/sbsubra1974/KeywordFramework.git [assuming you have already created KeywordFramework repository in GitHub under sbsubra1974@gmail.com]
+follow steps given in: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
+2. Change the current working directory to your local repository.
+$ cd /f/Users/User/git/KeywordFramework 
+verify the current directory:
+$ pwd
+Follow these steps as given in:-
+https://help.github.com/en/github/managing-files-in-a-repository/adding-a-file-to-a-repository-using-the-command-line
+3. Stage the file for commit to your local repository.
+$ git add TestCase.xlsx
+git remote add origin https://github.com/sbsubra1974/KeywordFramework.git
+# Adds the file to your local repository and stages it for commit. To unstage a file, use 'git reset HEAD YOUR-FILE'.
+4. Commit the file that you've staged in your local repository.
+$ git commit -m "Add existing file" (Note: you will give a description in commit and NOT during Push. The description you give during commit will be shown on the Repository in GitHub after push)
+# Commits the tracked changes and prepares them to be pushed to a remote repository. To remove this commit and modify the file, use 'git reset --soft HEAD~1' and commit and add the file again.
+5. Push the changes in your local repository to GitHub.
+$ git remote add origin https://github.com/sbsubra1974/KeywordFramework.git [see: https://stackoverflow.com/questions/10904339/github-fatal-remote-origin-already-exists]
+$ git push -u origin master
+# Pushes the changes in your local repository up to the remote repository you specified as the origin
+- To clone a GitHub repository (master) to your local machine
+https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
+1. Open Git Bash. => [i.open command prompt. ii.Type: cd C:\Program Files\Git iii.git-bash.exe <A new GIT Bash window will be opened>]
+2. Change the current working directory to the location where you want the cloned directory to be made.
+3. Type git clone, and then paste the URL you copied in Step 2.
+$ git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+Press Enter. Your local clone will be created.
+- To clone a GitHub repository (branch) to your local machine
+1. Open Git Bash.
+2. Change the current working directory to the location where you want the cloned directory to be made.
+3. Type git clone, and then paste the URL you copied in Step 2.
+$ git clone --single-branch --branch <branchname> <remote-repo> 
+Press Enter. Your local clone will be created.
+- For Eclipse to open a cloned project (or for Eclipse to load the dev branch directly from GitHub)[Assume EGit(for connecting to GitHub) is already installed in Eclipse]
+https://stackoverflow.com/questions/6760115/importing-a-github-project-into-eclipse
+i.<> 
+- INTEGRATE JENKINS JOB WITH GITHUB REPOSITRY [comes pre-installed when you install Jenkins server]
+https://www.valuebound.com/resources/blog/continuous-integration-using-jenkins-and-github-to-automate-deployment
+- HOW DO I CREATE A [New-w/o cloning]GIT REPOSITORY IN MY LOCAL MACHINE WITHOUT USING ECLIPSE?
+https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository#_getting_a_repo
+i. If you have a project directory that is currently not under version control and you want to start controlling it with Git, you first need to go to that project’s directory
+$ cd C:/Users/user/my_project
+ii. And type:
+$ git init
+iii. If you want to start version-controlling existing files (as opposed to an empty directory), you should probably begin tracking those files and do an initial commit.
+Like so:
+$ git add *.c
+$ git add LICENSE
+$ git commit -m 'Initial project version' 
+$ git remote...
+$ git push...
+- HOW DO I CLONE A GITHUB REPOSITORY BRANCH IN MY LOCAL MACHINE WITHOUT USING ECLIPSE?
+	1. Open Git Bash.
+	2. Change the current working directory to the location where you want the cloned directory to be made.
+	3. $ git clone --single-branch --branch <branchname> <remote-repo> [to access a code branch and not the master in GitHub]
+	4. Press Enter. Your local clone will be created. 
+	[You may now commit the project to make the files clean from dirty (?icon->orange cylinder icon)]
+	[You may even commit and push... to GitHub Repository]
+- HOW DO I CREATE A [New-w/o cloning]GIT REPOSITORY IN MY LOCAL MACHINE USING ECLIPSE?
+[https://eclipsesource.com/blogs/tutorials/egit-tutorial/]
+	i.  Install EGit as a plugin in Eclipse
+	ii. Right click on Project->Team->Share Project...->Configure Git Repository->Create a New Git Repository:current location::the location of the project you right clicked from:Traget location::the new Repository location
+		Keep 'Use or create repository in parent folder of project unchecked [default]
+	iii.When you click Finish, all files from the current location of project you right clicked from, will be copied to the Target location   	
+-Q: HOW DO I CLONE A GITHUB REPOSITORY BRANCH IN MY LOCAL MACHINE USING ECLIPSE?
+-Q: When running git commands from Eclipse, how can I access a branch and NOT the Master? 
+A: https://wiki.eclipse.org/EGit/User_Guide/Remote :: Branch selection
+-Q: [EGit REQUIRED]CAN I DELETE A GITHUB BRANCH FROM ECLIPSE?
+A: YES. https://stackoverflow.com/questions/8625406/how-to-delete-a-branch-in-the-remote-repository-using-egit
+-Q: [EGit REQUIRED]CAN I CREATE A BRANCH ON GITHUB FROM ECLIPSE?
+A: YES. Steps to do so:
+	i.Project->Right click->Team->Switch To->New Branch...->Source->Select...->Remote Tracking::origin/master
+	ii.Give Branch Name you want for the new branch which will be created in GitHub(say, dev)
+	iii.Click on Finish
+	iv. Now, Project->Right click->Team->Push to branch in remote <Finish>
+	v.The following message will be shown on Eclipse:
+		Repository https://github.com/sbsubra1974/Selenium.git
+		Create a pull request for 'dev' on GitHub by visiting:
+		https://github.com/sbsubra1974/Selenium/pull/new/dev
+	vi. When you go to GitHub, the newly created 'dev' branch should be listed there
+-Q: CAN I CREATE A BRANCH ON GITHUB WITHOUT ECLIPSE? 
+A: YES. <provide $git command details to do so>
+-Q: [EGit REQUIRED]HOW DO I WORK AND COMMIT MY CODE ON A BRANCH USING ECLIPSE(AND THEN PUSH IT TO REMOTE REPO FROM LOCAL REPO)?
+A: Steps to do so:-
+	i. Project->Right click->Team->Switch To->select the branch [local repo/working directory]
+	ii.Make changes to your file. Save and compile. [local repo/working directory]
+	iii. Project->Right click->Team->Commit... [commit...=>save snapshot of changes from local machine IDE/Working Directory/local repo to Git]
+	iv. The changed file(s) should be listed under section 'Staged Changes' [if not using Eclipse, staging will be seperate step with Git add command]
+	v. Add Commit Message
+	vi.Click on Commit and Push... [push...=>copy committed changes to remote branch]
+	vi.Go to GitHub: the changes should be visible in the branch
+	Next steps(<check whether all these steps can be done without GitHub>):-
+		i.You just made changes to source code file(s), saved and compiled them on your machine using IDE (Eclipse).
+		ii.You then commited(saved) the changes to the same branch in the GitHub Repository
+		iii.Now, you want to deploy this branch for final testing(by running Selenium tests) in production before merging to master [https://guides.github.com/introduction/flow/]
+		iv.Can you do it straight away? Answer:NO!! You need to have the code changes you committed to the branch reviwed by peers
+		v.So, you need to do a 'Compare & pull request' from GitHub (i.e you compare the changes yourself and then raise a pull request)
+		vi.Validate the changes made in the file(s) in 'Files changed' tab in GitHub under the Repository
+		vii.Include review comments in the conversation window
+		viii.Click on 'Close Pull Request'
+-Q: HOW DO I PUSH THE CODE CHANGES ONLY TO THE BRANCH AND NOT THE MASTER IN GITHUB WITHOUT ECLIPSE?
+A:  With Eclipse,see: -Q: [EGit REQUIRED]HOW DO I WORK AND COMMIT MY CODE ON A BRANCH USING ECLIPSE(AND THEN PUSH IT TO REMOTE REPO FROM LOCAL REPO)?
+	Without Eclipse: https://devconnected.com/how-to-push-git-branch-to-remote/
+		In order to push a Git branch to remote, you need to execute the “git push” command and specify the remote as well as the branch name to be pushed.
+		$ git push <remote> <branch>
+		For example, if you need to push a branch named “feature” to the “origin” remote, you would execute the following query
+		$ git push origin feature
+-Q: NOW WHAT HAPPENS ONCE THE PULL REQUEST IS CLOSED?
+	a. Is the file ready for Deployment?=>YES.As soon as you raise a Pull request, the code branch is ready to be deployed for testing in production. https://guides.github.com/introduction/flow/
+	b. Will the JENKINS-GITHUB plugin detect pull request closure as a trigger to run POM.xml? <check>
+	c. Will the branch, on which the pull request was raised, get deleted on its own?=>NO[You can see in GitHub that the branch is still there after we close the pull request]
+A: <check>
+-Q: What happens to the change(commit) history Git had maintained for the branch after the branch is merged with master?
+Is it deleted after merge? Or stored in Git DB?
+A: The commit history of the branch is stored in Git DB: https://guides.github.com/introduction/flow/
+"Once merged, Pull Requests preserve a record of the historical changes to your code(branch). Because they're searchable, they let anyone go back in time to understand why and how a decision was made."
+-Q: What is difference between saving a file locally after making changes to source code vs git commit?
+Imagine if there were not staging or commit. Just saving or building your source code would "commit" the changes to the branch
+Tip: making changes and saving a file in local repo makes it "dirty". The icon ">" is shown against it on the IDE
+	When you commit, the file becomes "clean".
+A:Git commit adds an abstraction to your local save and compile through the 'middleman or buffer' called 'Staging'
+Staging: https://www.atlassian.com/git/tutorials/saving-changes
+1.When you’re ready to save a copy of the current state of the project, you stage changes with git add. After you’re happy with the staged snapshot, you commit it to the project history with git commit.
+"Instead of committing all of the changes you've made since the last commit, the stage lets you group related changes into highly focused snapshots before actually committing it to the project history. This means you can make all sorts of edits to unrelated files, then go back and split them up into logical commits by adding related changes to the stage and commit them piece-by-piece. " 
+2. staging area is a buffer between the working directory and the project history
+Commit: https://www.atlassian.com/git/tutorials/saving-changes/git-commit
+1. The "commit" command is used to save your changes to the local repository. ... Using the "git commit" command only saves a new commit object in the local Git repository. Exchanging commits has to be performed manually and explicitly (with the "git fetch", "git pull", and "git push" commands).
+2."The git commit command captures a snapshot of the project's currently staged changes. Committed snapshots can be thought of as “safe” versions of a project—Git will never change them unless you explicitly ask it to. Prior to the execution of git commit, The git add command is used to promote or 'stage' changes to the project that will be stored in a commit. These two commands git commit and git add are two of the most frequently used."
+3. "Commits are created with the git commit command to capture the state of a project at that point in time. Git Snapshots are always committed to the local repository. "
+4. Each developer’s local repository is a buffer between their contributions and the central repository(master)
+-Q: WHEN IS THE SOURE CODE CHANGED BY YOU(IN YOUR BRANCH) VISIBLE TO YOUR TEAM?
+a: after you commit your changes to the branch?
+b: after you push[not merge] the committed changes to remote server(say:GitHub)?
+c: after the committed changes are merged with master and merged local branch is deleted?
+A: Answer is b: https://devconnected.com/how-to-push-git-branch-to-remote/
+"When you are working locally, you are committing to your local branch, but what if you wanted to share your changes with your colleagues?
+In order to share changes, you will need to push your Git branch to the remote repository."
+https://www.atlassian.com/git/tutorials/comparing-workflows
+"Push new commits to central repository:Once the local repository has new changes committed. 
+These change will need to be pushed to share with other developers on the project."
+$ git push origin master"
+-Q: IS IT POSSIBLE FOR MORE THAN ONE DEVELOPER TO WORK ON ONE BRANCH (SAY: THERE ARE TWO BRANCHES CREATED FROM MASTER TEST SUITE CENTRAL REPOSITORY-SELENIUM TEST CASES AND CUCUMBER TEST CASES.THERE COULD BE MORE THAN ONE DEVELOPER WORKING ON EACH AT ANY POINT IN TIME)?
+A: YES.[Maybe then each developer creates further branches within each branch(say: two developers working on two seperate POM classes within Selenium Test Case branch create one seperate branch for each of their POM classes)]
+-Q: HOW DO COMMIT AND MERGE WORK FOR SUCH CASES?
+A: You devise a Git workflow. <check details on how to do the following:e.g-
+	one developer creates a POM class in his local repo, commits it to the Selenium test case branch. Selenium Test Case branch is then merged with the master test suite central repo 
+	how do we stop this developer,within the Git workflow, from merging his code directly to master test suite central repository?
+	how do we stop Jenkins from triggering this test just because it has been added to the master test suite central repository?
+	Jenkins should always trigger Master Test Suite Central Repository ONLY after the application code is deployed
+	>	
+-Q: CAN I DO A COMPARE AND PUSH REQUEST OF A NEWLY CHANGED/COMMITTED FILE FROM ECLIPSE?IF YES, HOW?
+A: NO. <check>	
+-Q: CAN I DO A COMPARE AND PULL REQUEST OF A NEWLY CHANGED/COMMITTED FILE WITHOUT GITHUB? IF YES, HOW?
+A: NOT SURE. <check>
+-Q: CAN YOU PERFORM A PULL REQUEST FROM ECLIPSE? WILL IT EVEN MAKE SENSE?
+A: You can definitely perform a pull operation in Eclipse to import remote changes(done and committed to the same branch or 'ref' by your peer and which is getting reflected on GitHub). BUT-You CANNOT perform a PULL REQUEST for code review-will not make sense. 
+Code review is part of team collboration and so you need a tool like GitHub to do it for you. Not Eclipse <check>
+-Q: [EGit REQUIRED][BEST PRACTICE]: IS IT BETTER TO CREATE THE NEW BRANCH DIRECTLY IN GITHUB OR VIA ECLIPSE?
+A: ANY WHICH WAY-It really shouldn't matter<check>
+-Q: [EGit REQUIRED]: IS IT POSSIBLE TO CREATE A NEW GITHUB REPOSITORY FROM ECLIPSE(say: when pushing a newly created and committed local repository)?
+A: NO. BECAUSE WHILE PUSHING A REPOSITORY TO GITHUB, ECLIPSE ASKS FOR ASKS FOR THE URL AND PATH OF GITHUB REPOSITORY WHERE THE CODE IS PUSHED TO IN Destination Git Repository POPUP<check>
+-Q: WHAT IS THE DIFFERENCE BETWEEN A 'MERGE' AND 'DEPLOY'? 
+A: https://guides.github.com/introduction/flow/
+A merge is always done of the branch with the master [i.e not between two branches]
+Once you initiate a Pull Request, the code is all set to be reviewed and merged with Master [GitHub will show a message like so "sbsubra1974 wants to merge 4 commits into master from dev"]
+If you're using a Shared Repository Model, Pull Requests help start code review and conversation about proposed changes before they're merged into the master branch
+Deploy: https://guides.github.com/introduction/flow/
+Deploy step is not shown on GitHub
+Deploy(to staging[production like]:also called 'staging a PR') is done of the branch that is currently under peer review post Pull Request and requires testing to be done
+Deploy(to staging[production like]:also called 'staging a PR') is done BEFORE you merge the branch to master-Jenkins can initiate test execution in production on the deployed branch <check how> 
+If your branch causes issues, you can roll it back by deploying the existing master into production.
+-Q: POST CODE MERGER WITH THE MASTER REPO, DOES THE MASTER REPO NEED TO BE 'DEPLOYED' TO PRODUCTION? 
+A: YES. https://github.com/openfoodfoundation/openfoodnetwork/wiki/The-process-of-review,-test,-merge-and-deploy
+"If everybody is happy with the pull request, it can be merged into the master branch and deployed to a production server."
+-Q: WHT SHOULD BE THE TESTING PROCESS FOR THE STAGING[PRODUCTION LIKE]DEPLOYED BRANCH CODE (POST PULL REQUEST)?
+A: https://github.com/openfoodfoundation/openfoodnetwork/wiki/Testing-process
+	i.  PRs are ordered by priority, the upper one will be the first one to test
+	ii. In a distributed team, there could be various staging servers
+	iii. The next available developer who has access to a staging server takes the top priority PR and stages it (i.e performs tests in staging server)
+	iv. While provisioning your staging server you will need to load sample test data
+-Q: HOW DO I MERGE A BRANCH TO THE MASTER IN GITHUB? DO I NEED JENKINS TO DO IT?
+A: <check>
+-Q: IS JENKINS USED TO DEPLOY THE CODE (STAGING OR PRODUCTION) AND RUN THE TESTS?
+A: YES. <check how and what should be the Git Workflow for developing, running and mantaining test cases and test data. Specifically, the following points:->
+-Q: SHOULD THERE BE A SEPERATE REMOTE MASTER TEST REPO(IN GITHUB) AND BRANCHES FOR TEST CASES THAT ARE MAINTAINED LIKE A NORMAL APPLICATION?
+-Q: SHOULD THE BRANCHES BE COMMITTED AND PUSHED TO REMOTE MASTER TEST REPO(IN GITHUB) FOR PULL REQUESTS? 
+-Q: SHOULD THE NEW TEST CASES BRANCH BE DEPLOYED IN SEPERATE TEST STAGING SERVER AND TESTED WHILE THE PULL REQUEST IS ON?
+-Q: SHOULD THE TEST DATA BE FED TO THE TEST STAGING SERVER?
+-Q: SHOULD THE TEST CASES BRANCH BE MERGED WITH MASTER TEST REPO ON SUCCESSFUL EXECUTION ON TEST DATA?
+-Q: SHOULD THE TEST CASES BRANCH BE NOT MERGED WITH MASTER TEST REPO ON FAILURE? 
+-Q: THE IDEA IS TO KEEP THE MASTER TEST REPO 'DEPLOYMENT READY' or 'EXECUTION READY' SO JENKINS CAN DEPLOY IT ON APPLICATION SERVER AND EXECUTE IT AS SOON AS THE APPLICATION CODE BRANCH IS DEPLOYED FOR TESTING DURING PULL REQUEST AND APPROVAL PROCESS, ISN'T IT? 
+-Q: THE IDEA IS ALSO TO KEEP TEST DATA CREATION, MGMT ETC AND TEST CASES CREATION, MGMT[SAY: BY MAINTAINING SEPERATE BRANCHES FOR SELENIUM AND CUCUMBER TESTS AND SUB BRANCHES FOR EACH POM UNDER DEVELOPMENT BY THE TESTER] ETC ABSTRACTED AWAY FROM CORE APPLICATION, ISN'T IT?
+-Q: THE IDEA IS ALSO TO KEEP FOCUS TESTING THE CORE APPLICATION ON APPLICATION STAGING SERVER AND NOT THE TEST CASES THEMSELVES, ISN'T IT?
+-Q: THE IDEA IS TO CREATE TWO SEPERATE JOBS IN JENKINS-ONE FOR DEPLOYMENT OF MERGED MASTER TEST REPO AND EXECUTION OF NEWLY CREATED TESTS IN A SEPERATE TEST SERVER AND TEST DATA, 
+THE OTHER FOR DEPLOYING MERGED APPLICATION CODE MASTER AND THEN EXECUTING THE MASTER TEST REPO IN PRODUCTION SERVER WITH PRODUCTION-LIKE DATA, ISN'T IT?
+-Q: THE IDEA IS TO ENSURE SELECTION OF THE TESTS TO BE RUN ON APPLICATION MASTER ON PRODUCTION IS DECIDED BY TESTNG.XML MAINTAINED IN MASTER TEST REPO, ISN'T IT? 
+-Q: IS THIS GIT WORKFLOW FOR TEST CASES VIABLE CONSIDERING THAT THE POM CLASSES BEING CREATED FOR TESTING WILL THEMSELVES BE BASED ON THE PAGES[i.e THE WEB UI] THAT ARE PART OF THE CORE APPLICATION DEVELOPMENT?
+-Q: IF THIS GIT WORKFLOW FOR TEST CASES IS NOT VIABLE THEN HOW WILL A TESTER, BEFORE RUNNING HIS TESTS ON THE APPLICATION CODE[i.e THE WEB UI UNDER DEVELOPMENT] a)DEVELOP AND TEST HIS POM CLASS b)TEST HIS JUNIT/TESTNG CLASS c)CREATE AND TEST THE FEATURE FILE AND STEP DEFINITION CLASSES?
+NOTES: 
+	i.GITHUB WILL NOT 'BUILD' OR 'COMPILE' THE APPLICATION-IT WILL MANAGE THE SOURCE CODE SO THAT TOP-LEVEL MAVEN TARGETS COULD PICK THAT SOURCE CODE[SAY: VIA JENKINS 'BUILD' TASK] AND 'BUILD' THE APPLICATION
+	ii.EVEN JENKINS DOES NOT 'BUILD' OR 'COMPILE' ANY CODE. IT MERELY SEARCHES FOR THE SOURCE CODE THAT MAVEN TARGETS SEEK AND THEN 'RUN' MAVEN'S POM.XML WHICH BUILDS OR COMPILES THE SOURE CODE INTO APPLICATION
+	iii.A GIT 'DEPLOY' IS NOT ABOUT BUILDING AN APPLICATION-IT IS ABOUT MAKING THE MASTER BRANCH OF SOURCE CODE READY(DEPLOYABLE) TO BE PICKED FOR COMPILATION
+	So, lets say and application is a .war file to be deployed in an application server or an .exe or .jar file to be deployed on a local m/c. Then:-
+		i. what is the role of Git/GitHub?
+		ii.what is the role of Maven's pom.xml?
+		iii.what is the role of Jenkins?
+		iv.what is the developer committing-his updated source code as a .java file or .class file(i.e compiled)?=>I DO NOT SEE ANY CLASS FILES IN THE PROJECT FOLDER HIERARCHY IN ECLIPSE OR PUSHED CODE IN GITHUB;I SEE ONLY .JAVA FILES=>EVEN IF YOU CREATE A .JAVA FILE, THEN COMPILE IT (CREATE ITS .CLASS FILE) AND RUN THIS CLASS FILE IN ECLIPSE; ECLIPSE DOE NOT SHOW YOU THE CLASS FILES IN THE PROJECT HIERARCHY-AND SO NEITHHER THE CLASS FILES ARE GETTING COMMITTED TO THE BRANCH AND PUSHED TO(DEPLOYED) GITHUB.SO, THE GITHUB CONTAINS ONLY THE .JAVA FILES=>YOU NEED TO GET THESE .JAVA FILES IN GITHUB COMPILED AND DEPLOYED IN PRODUCTION(AS .JAR OR .WAR) VIA POM.XML RUNNING FROM MAVEN 'BUILD'
+		v.does GitHub maintain only .java files or .class files?
+		Q: Should .class files be put under version control?
+		A: NO. Anything generated by the build should be ignored, almost always
+		even if the developer compiles and runs the source code in his (local) m/c, what he commits and pushes to central source code repo is the .java and not the compiled (or build) .class file
+		so, Jenkins Build will always pick the .java file(and not .class or .jar or .war file) and then pom.xml will build a .war or a .jar (both collection of .class files) deploy it in prod and run it<check: is it Jenkins job to run a deployed application>
+		"You cannot deploy Java files in production servers:" https://www.quora.com/How-do-I-deploy-changes-in-java-file-to-Production-server-without-installing-Eclipse-IDE
+		https://stackoverflow.com/questions/8236785/should-class-files-be-put-under-version-control
+		vi. is the .jar file created and stored in GitHub(post merger of all required .class files via branches)?
+		vii.if GitHub stores .jar files, then what does Jenkins 'Build' task do?
+		viii.does Eclipse create a .jar file while compiling and running a .java file?[Hint: you do a 'Run As'->Java Application] 
+		ix. does JUnit create a .jar file while running a test from Eclipse?
+		x. UNDERSTAND DEPLOYMENT-DEPLOY IN GIT TERMS. DEPLOY IN APPLICATION TERMS. DO WE DEPLOY THE COMPILED .CLASS FILES OR PACKAGED .JAR OR .WAR FILES?
+		JENKINS BUILDS .WAR/.JAR [i.e CLASS FILES] FROM THE .JAVA FILES IN GITHUB SCM
+		JENKINS DEPLOYS .WAR TO AN APPLICATION SERVER. BUT YOU NEED TO INSTALL THE JENKINS PLUG-IN FOR THAT: https://www.tutorialspoint.com/jenkins/jenkins_automated_deployment.htm
+		"There are many plugins available which can be used to transfer the build files after a successful build to the respective application/web server. On example is the “Deploy to container Plugin”. To use this follow the steps given below.
+		Step 1 − Go to Manage Jenkins → Manage Plugins. Go to the Available section and find the plugin “Deploy to container Plugin” and install the plugin. Restart the Jenkins server.
+		This plugin takes a war/ear file and deploys that to a running remote application server at the end of a build."
+		xi. Where does Jenkins store the compiled class files?
+		
+-Q: WHAT DOES JENKIN 'BUILD' TASK DO?
+A: It invokes top-level Maven targets 
+
+-Q: WHAT DOES JENKIN 'BUILD TRIGGER' TASK DO?
+A: It is GitHub hook trigger for GITScm polling. Whenever there's a code commit in GitHub, it will invoke 'BUILD' task
+
+-Q: WHAT DOES JENKIN 'Source Code Management' TASK DO?
+A: It gives details of the Repository URL, Branches to build for is GitHub hook trigger to look for
+
+-Q: HOW DOES JENKIN DEPLOY BUILD?
+A: It gives details of the Repository URL, Branches to build for is GitHub hook trigger to look for
+	
+-Q: Should the Repository name of your project in GitHub and local machine(as folder name) be the same?
+A: NO.
+-Q: What are Tags,Push Ref specifications[project right click->Team->commit and push->advanced settings::source ref, destination ref remote ref] and HEAD? 
+A: <check>
+-Q: What is the difference between a Tag and a Branch?
+A: <check>
+-Q: Mention the correct relative path of POM.xml while running from Jenkins. Like so:- https://stackoverflow.com/questions/31157672/no-such-file-pom-xml-error-in-jenkins
+You have to mention the path of your application's pom.xml in relation to jenkins work space.
+Once Jenkins build starts it will download the source code to .jenkins\jobs\yourjobname\workspace and builds it there, you can check this location if you are not sure of the pom path.
+E.g For an application Test .jenkins\jobs\jenkinsJobName\workspace\Test\pom.xml
+The root pom field should be Test\pom.xml
+So, lets say, the location of your pom.xml within Jenkins workspace is:- https://43498543.ngrok.io/job/SeleniumTestsFromGitHub/ws/maven-demo/pom.xml
+Then, set the value in Jekins->Build->Invoke top-level Maven targets->POM as maven-demo\pom.xml
+-Q: choose-selected-testng-xml-files-to-execute-using-maven-Jenkins:- https://www.seleniumeasy.com/maven-tutorials/choose-selected-testng-xml-files-to-execute-using-maven
+	i. In your POM.xml, make testng suite xml file(s) as dynamic. Like so:-
+		<suiteXmlFiles>
+          <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+        </suiteXmlFiles>
+	ii. When running Maven-POM.xml, give the name(s) of the testNG suite xml fileson command line. Like so:-
+		clean test -Dsurefire.suiteXmlFiles=src/test/java/testngrunmodes.xml (one testNG xml suite)
+		[Where the absolute path of the testng xml suite is: C:\Users\User\git\repository\Selenium\maven-demo\src\test\java\testngrunmodes.xml]
+		Or
+		mvn clean test -Dsurefire.suiteXmlFiles=mytestng1.xml,mytestng2.xml (multiple testNG xml suites)
+	iii. In Jenkins,
+		 Job->Build->Invoke top-level Maven targets->Goals: clean test -Dsurefire.suiteXmlFiles=src/test/java/testngrunmodes.xml
+		 [Where the absolute path of the testng xml suite in Jenkins workspace is: http://43498543.ngrok.io/job/<Jenkins item name(e.g:SeleniumTestsFromGitHub)>/ws/maven-demo/src/test/java/testngrunmodes.xml]
+		 Job->Build->Invoke top-level Maven targets->Goals->Advanced->POM->maven-demo/pom.xml
+NOTE:Jenkins WILL NOT TRIGGER A WEBPAGE AND WILL RUN TESTS HEADLESS BY DEFAULT
+		 
+23. JUnit reports in HTML using maven-surefire-report-plugin:- http://maven.apache.org/surefire/maven-surefire-report-plugin/usage.html
+[SUREFIRE IS A REPORTING PLUG-IN FOR MAVEN. SINCE JUNIT'S INTERNAL REPORTING IS NOT GOOD, WE USE SUREFIRE WHEN USING MAVEN TO TRIGGER JUNIT TESTS.IN COMPARISON, TESTNG HAS ITS OWN REPORTS]
+	- 	add the following in the <reporting> section of your POM
+	<reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>3.0.0-M4</version>
+      </plugin>
+    </plugins>
+  </reporting>
+	-	Open powershell at the root of your project. Like so:-
+	F:\Users\User\eclipse-workspace\maven-demo>
+	- 	Select the JUnit tests to be run and whose reports to be generated. In this example below, we run the JUnit test suite to generate its report:-
+		mvn -Dtest=TestRunnerClass surefire-report:report
+	-	surefire-report.html would have been created [minus the CSS] at target/site
+	-	Delete files present in target\surefire-reports before running the surefire plug-in. surefire-report.html gets its contents details for test from this folder.Any left over test file in this folder, which is not relevant in the current run, will show up in surefire-report.html
+
+24. You can specify which tests to be run from command options for POM.xml for maven surefire plugin. The command property options will override the ones given in pom.xml:-
+https://stackoverflow.com/questions/6819888/how-to-run-all-tests-in-a-particular-package-with-maven
+https://maven.apache.org/surefire/maven-surefire-plugin/test-mojo.html
+http://maven.apache.org/surefire/maven-surefire-plugin/examples/single-test.html
+Notes: 
+	i.test [-Dtest] is a surefile plugin property. It will run all classes that have "test" substring in their names
+	ii.With Maven POM.xml, you CANNOT run JUnit w/o surefire -Dtest property. Like so, the following WILL not work[Because JUnit class IMDBPageObjectTest does not have a main method]:-
+	exec:java -Dexec.mainClass="com.selenium.inc.IMDBPageObjectTest"
+	iii. Cucumber tests can be run without JUNit in Maven POM.XML because main method is provided by io.cucumber.core.cli.Main. Like so:-
+	exec:java -Dexec.classpathScope=test -Dexec.mainClass=io.cucumber.core.cli.Main -Dexec.args="src/main/resources/com/selenium/cucumber/features/GoogleMapPageObjectFactory.feature --glue com.selenium.cucumber.stepdef --tags @test1,@test2"
+		
+Like so:-
+(1) Skip all test execution during maven build
+mvn package -DskipTests
+(2) Execute All test cases
+mvn test
+(3) Execute specific test group
+mvn test -DincludeGroups=TestGroup1,TestGroup2
+(4) Exclude specific test group during execution
+mvn test -DexcludeGroups=TestGroup3,TestGroup4
+(5) Execute specific package testcases
+mvn test -Dtest="test.java.com.service.map.**"
+(6) Execute specific test
+mvn test -Dtest=Test1,Test2 	
+	
+JAVA NOTES:-
+1. It is possible for a class to implement an interface present in another package outside of its own: YES
+2. Is it possible to declare an Interface as a data type? Like so:
+JavascriptExecutor jse = (JavascriptExecutor)webdriver;
+YES- If you define a reference variable(jse) whose type is an interface(JavascriptExecutor), 
+any object(webdriver = new ChromeDriver()) you assign to it must be an instance of a class that implements the interface(ChromeDriver class should implement JavaScriptExecutor interface).
+See: https://docs.oracle.com/javase/tutorial/java/IandI/interfaceAsType.html
+Hence, ChromeDriver webdriver class implements JavascriptExecutor interface. See Class ChromeDriver:All Implemented Interfaces at https://www.javadoc.io/doc/org.seleniumhq.selenium/selenium-chrome-driver/latest/org/openqa/selenium/chrome/ChromeDriver.html
+3. It is perfectly OK to place constructor command outside of all methods in the class. 
+Just make sure first the parameter passed in the constructor is a valid created object e.g:-
+class abc{
+Actions actions = new Actions(webdriver); //make sure first webdriver object is created 
+public void f1(){}
+public void f2(){}
+}
+4. You can call static method[PageFactory.initElements()] in another class directly using the class. See Page Factory:4d below 
+5. for an object of a class that implements an interface, to access the methods of the interface, needs to be explicitly typecast first to the interface.
+For example, ChromeDriver class implements the interface 'TakesScreenshot'. You will have to typecast the object of ChromeDriver to 'TakeScreenshot' interface before accessing the interface method 'getScreenshotAs()'.
+Like so:- https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/TakesScreenshot.html#getScreenshotAs-org.openqa.selenium.OutputType-
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.chrome.ChromeDriver;
+private WebDriver webdriver;
+webdriver = new ChromeDriver();
+((TakesScreenshot) webdriver).getScreenshotAs()
+- Q: But, why would I need to cast an implementing class object to its interface? A: https://dev.to/alephnaught2tog/eli5-why-cast-to-an-interface-1gi
+6. You can return value from try catch block. https://www.benchresources.net/returning-value-from-method-having-try-catch-finally-blocks-in-java/
+7. Java Properties file. How to read and set values: https://docs.oracle.com/javase/tutorial/essential/environment/properties.html
+8. Strings:-
+- Copy string: Keyword=new String(row.getCell(1).toString());
+9. Apache POI: how to check for NULL value in a cell. via MissingCellPolicy. Like so:-
+if(row.getCell(0,Row.MissingCellPolicy.RETURN_NULL_AND_BLANK)==null){ 
+}
+10. Java methods can return class type.It is OK and accepted. https://docs.oracle.com/javase/tutorial/java/javaOO/returnvalue.html
+It is bit confusing in findElement(By by) method.Like so:- 
+WebElement findElement(By by) https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/By.html
+webelement = webdriver.findElement(By.name(locator))
+
+JUNIT4 NOTES[https://junit.org/junit4/ :: Usage and Idioms]
+1. compare and assert two strings:-
+assertArrayEquals("equal",sourceElement.getAttribute("text").strip().toCharArray(),targetContentElement.getText().strip().toCharArray());
+
+2. When multiple asserts are present in a test, Selenium test would continue till the first JUnit assert failure Like so[maven-demo::com.selenium.SelectFromDropDownPageObjectFactoryListTest]:-
+		assertTrue(elements.size()>=3); //junit will continue if assertTrue passes
+
+3. Junit best practices:-		
+https://howtodoinjava.com/best-practices/unit-testing-best-practices-junit-reference-guide/
+
+4. From JUnit 4.7 onwards you can run your tests in parallel(using surefire plug-in for maven). http://maven.apache.org/surefire/maven-surefire-plugin/examples/junit.html :: Running Tests in Parallel
+POM.xml:-
+<plugins>
+    [...]
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M4</version>
+        <configuration>
+          <parallel>methods</parallel>
+          <threadCount>10</threadCount>
+        </configuration>
+      </plugin>
+    [...]
+</plugins>
+
+5. JUnit 4.8 introduced the notion of Categories. You can use JUnit categories by using the groups parameter(using surefire plug-in for maven). 
+http://maven.apache.org/surefire/maven-surefire-plugin/examples/junit.html :: Using JUnit Categories
+POM.xml:-
+<plugins>
+[...]
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M4</version>
+        <configuration>
+            <groups>com.mycompany.SlowTests</groups>
+        </configuration>
+    </plugin>
+[...]
+</plugins>
+
+6. You can specify which tests can be excluded in Junit(via @Ignore annotation in the test class itself-you do not mention the tests to be ignored in maven-surefire-POM) . [https://junit.org/junit4/ :: Usage and Idioms:Ignoring Tests. 
+Like so:-
+@Ignore("Test is ignored as a demonstration")
+@Test
+public void testSame() {
+    assertThat(1, is(1));
+}
+
+7. When running junit tests from Jenkins->Maven, why does surefire report all reports as TestNG reports?
+- Because of the following depedency added in the POM.xml. This depedency is to get started with TestNG, in your projectsurefire. It will call surefire for TestNG automatically:-
+[http://maven.apache.org/surefire/maven-surefire-plugin/examples/testng.html]
+<dependency>
+  <groupId>org.testng</groupId>
+  <artifactId>testng</artifactId>
+  <version>6.10</version>
+  <scope>test</scope>
+</dependency>
+
+8. Location of Maven-surefire reports: F:\Users\User\eclipse-workspace\maven-demo\target\surefire-reports
+
+9. ANY .java file created under src/test/java (or packages within src/test/java) CANNOT be moved to src/main/java (or packages within src/main/java)
+ 
+POM notes:-
+1. Page Object Model: https://www.selenium.dev/documentation/en/guidelines_and_recommendations/page_object_models/
+
+2. Should a command like this be made part of POM class[From AnnaUnivPageObject.java project:maven-demo]:-
+element = webdriver.findElement(By.name("userName")); //will be webpage specific
+These pages are stored as objects, which will contain specific information about how the web page is composed and how actions are performed– very little of which should concern you as a tester.
+So, the answer is 'yes' because findElement(By.) details how actions are going to be performed on the page
+the pageURL() simply returns the composition of the webpage (i.e its URL). Hence, it is included in the PO file
+- https://www.selenium.dev/documentation/en/introduction/on_test_automation/
+
+3a. (Explicit)Wait with find.element[e.g ExpectedConditions.visibilityOfElementLocated]: place the wait.until command in the POM class ["Pro-find wait"]
+[the user here is not bothered how much time it would take for Selenium to validate the visibility of an element-he just wants the element to be shown to him so that he can perform further actions on it]
+- maven-demo:IMDBPageObject.java::waitAndFindSearchField(),waitAndFindMovieList()
+3b.(Explicit)Wait after an action is performed[say you click on a URL and wait for the page to load to assert whether the correct page was loaded-the user would perform the action and wait for the page to load while executing a test case]: 
+place the wait in the Test Class ["Pro-action wait"]
+- maven-demo:IMDBPageObjectTest.java::<not yet written>
+3c.However,there's a scenarios where, after performing the action, the user doesn't just want the page to load:he wants to assert some element for its text in the newly loaded page.
+In here,like in 3a, the user is not bothered how much time it would take for Selenium to validate the visibility of an element-he just wants the element to be shown to him so that he can assert the text on the element]
+This scenario is also a "Pro-find wait". So, place the wait.until[ExpectedConditions.visibilityOfElementLocated] command in the POM class
+- maven-demo:IMDBPageObjectTest.java::testwaitAndFindMoviePage()
+Notice how in this scenario, the element's locator is passed as an argument of testwaitAndFindMoviePage() and never declared as a POM Class parameter.
+The reason being, the element's locator can change at end user's discretion depending on the movie name he chooses for test case
+- maven-demo:IMDBPageObjectTest.java::testwaitAndFindMoviePage(),maven-demo:IMDBPageObject.java::waitAndFindMoviePage()
+
+4. POM without Page Factory: 
+	i.everytime the locator of an existing element changes, you will have to change the locator value in POM class. 
+	ii.If the locator of an existing element changes, you will have to change the By.clause in findElement function in POM.class 
+	iii.If new elements get added in the page, you will have to include them in the POM.class-in the declaration as well as add a new findMethod for them
+	iv.Including Switch-case for locator types in POM class will not work.In POM,there is no way to know the changed locator type at runtime[i.e without declaring them in POM.class] before calling findElement(by.<>locator type>) [In keyword driven framework,you get to know the locator type atruntime from the keywordsheet]
+5. POM with Page Factory:
+	i. everytime the locator of an existing element changes, you will have to change the locator value and its type in @FindBy clause
+	ii. If new elements, get added in the page, other than doing step i.; nothing else will be required
+	iii.Including Switch-case for locator types in POM class will not work.In POM,there is no way to know the changed locator type at runtime[i.e without declaring them in POM.class] before calling findElement(by.<>locator type>) [In keyword driven framework,you get to know the locator type atruntime from the keywordsheet]
+
+4a. Page Factory:
+What is Page Factory?
+- Page Factory is an inbuilt Page Object Model concept for Selenium WebDriver 
+- with the help of PageFactory class, we use annotations @FindBy to find WebElement. We use initElements method to initialize web elements
+- You can implement Page Object Model either on your own [e.g maven-demo::AnnaUnivPageObject,IMDBPageObject,GitHubPageObject] or via PageFactory[shorter, more efficient]
+https://www.guru99.com/page-object-model-pom-page-factory-in-selenium-ultimate-guide.html#5
+4b. How can we implement 'wait' functions when using @FindBy?
+- https://stackoverflow.com/questions/39227164/how-can-we-implement-wait-functions-when-using-findby
+- use the following command:-
+PageFactory.initElements(new AjaxElementLocatorFactory(webdriver, 5), GitHubPageObjectFactory.this);
+import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+- or use wait.until command in the test case[see maven-demo::com.selenium.GitHubPageObjectFactory class]:-
+PageFactory.initElements(webdriver, GitHubPageObjectFactory.this) //do not add wait here 
+wait.until(ExpectedConditions.textToBePresentInElementValue(pgobj.loginFieldbyId, loginName)); //add wait just after the actions command and before assert command in the test case
+4c. When using PageObject Factory for dynamic (Ajax) elements, using PageFactory.initilise with @FindBy will NOT work since the Ajax element is not available in the DOM at that time.
+	you will have to use a mix of PageFactory with @FindBy[for static elements in the page] and webdriver.findElement(By)[for dynamic Ajax element in the same page]
+	Also see: https://stackoverflow.com/questions/43037349/mapping-dynamic-elements-with-findby-annotations-and-pagefactory
+	- See 3. Aadditional features to be explored:Drop down selectors/deselect
+4d. You can call static method[initElements] in another class[SelectFromDropDownPageObjectFactoryList2] directly using the class[org.openqa.selenium.support.PageFactory]
+	Like so:-
+	PageFactory.initElements(webdriver, SelectFromDropDownPageObjectFactoryList2.this); 
+4e. Page Factory: The whole page gets initialised. So, you do not have to write findElement() functions seperately for each element. 
+You declare a locator in POM class and let Page Factory find for you using @FindBy. Like so:- 
+@FindBy(xpath="//*[@id=\"webklipper-publisher-widget-container-notification-close-div\"]/span")
+public WebElement happycodeAlertIcon; 
+	
+
+5. POM and DSL:-
+- POM allows modifying test script keeping the page under test same
+- DSL allows modifying the page under test keeping the test script same
+DSL method completely abstracts the concepts of input fields, buttons, clicking, and even pages from your test code. 
+Using this approach, all a tester has to do is call this method. 
+This gives you a maintenance advantage: if the login fields ever changed, you would only ever have to change this method - not your tests.
+Consider DSL method as an API you call to perform certain set of operation or action(s)
+
+6. TestNG:-
+FEATURES TO BE EXPLORED:- [https://testng.org/doc/documentation-main.html]
+TestNG Annotations : @Test, AfterTest
+BeforeTest, BeforeMethod, AfterMethod
+BeforeSuite, AfterSuite,
+Usage of DataProvider.
+Grouping Tests.
+
+Continue tests post assertion failures [soft errors]
+- https://blogs.perficient.com/2016/01/13/hard-and-soft-assertions-in-selenium/
+-Annotations
+-run order/sequence
+-groups/suites: sanity, functional tests etc
+-retries
+-factories-when and why?
+-dataproviders-passing parameters for different methods and return types
+-reports (listeners, reporters) vs Surefire reports
+-running tests via testng.xml vs running tests programitically
+-TestNG exit codes
+-Dry run
+-adv of using testng.xml and without.
+-what can you do with testng.xml and what you can't(e.g dataproviders are better off without testng.xml)
+-difference between priority	The priority for this test method. Lower priorities will be scheduled first. vs By default, TestNG will run your tests in the order they are found in the XML file
+like so:-
+<test name="Regression1" preserve-order="false">
+  <classes>
+ 
+    <class name="test.Test1">
+      <methods>
+        <include name="m1" />
+        <include name="m2" />
+      </methods>
+    </class>
+ 
+    <class name="test.Test2" />
+ 
+  </classes>
+</test>
+
+-Mention TestNG.xml in POM.xml. Like so:-
+<plugins>
+    [...]
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M4</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
+      </plugin>
+    [...]
+</plugins>
+
+-Running TestNG classes by executing suite.xml[i.e testng.xml] file
+https://rationaleemotions.wordpress.com/2017/09/29/dynamic-parameterization-in-testng/
+	i.Right click on suite.xml->Run Configurations->Test tab->Run...->select Suite->Browse...->check the required testsuite.xml
+	ii.Click on Arguments tab-> (J)VM arguments: -Dtestng.dtd.http=true
+	->Apply->Run
+
+-While running your TestNG suite.xml from Maven-POM.xml, follow the steps:- 
+	1. make sure you include the testsuite.xml in the POM.xml. Like so:-
+	<configuration>
+			<testFailureIgnore>true</testFailureIgnore>    
+						<!-- Suite testng xml file to consider for test execution -->
+						<suiteXmlFiles>
+							<suiteXmlFile>testng.xml</suiteXmlFile>
+							<suiteXmlFile>softerror.xml</suiteXmlFile>
+						</suiteXmlFiles>
+					</configuration>
+	2. In the Maven Build, mention the suite.xml youw ant to be run in Maven Goal.Like so:-
+		clean test -Dsurefire.suiteXmlFiles=C:\Users\User\git\repository\Selenium\maven-demo\src\test\java\softerror.xml 
+
+-Is suite xml[i.e testng.xml] file a necessity while running a testNG class? If yes, how does Eclipse run a TestNG class without suite xml file when I do a right click on the TestNG class->Run As->TestNG test/Run Configurations...->TestNG->select test to be run->Test tab->Run...class radio button->Run?		
+-A suite xml is needed while running a TestNG class IF you are not planning to trigger the TestNG class programatically. Like so:- 
+If you are using Eclipse, there is a plugin for TestNG that you can install and then trigger the scripts from Eclipse and it will auto-create the necessary XML files.
+https://stackoverflow.com/questions/32288568/how-to-execute-testng-and-maven-without-testng-xml-file
+https://stackoverflow.com/questions/11077349/can-i-execute-testng-without-an-xml-file
+A suite xml is NOT needed if you are planning to trigger testng classes programtically.
+You will have to create TestNG object and include the testng classes to be run in it.Like so:-
+	TestListenerAdapter tla = new TestListenerAdapter();
+	TestNG testng = new TestNG();
+	testng.setTestClasses(new Class[] { Run2.class });
+	testng.addListener(tla);
+	testng.run();
+https://testng.org/doc/documentation-main.html#running-testng-programmatically
+https://stackoverflow.com/questions/21577547/how-to-create-testsuite-class-in-testng-without-xml-file
+		
+-When running TestNG from comamndline, will all command-line switches be overidden by their values given in testng.xml?
+But, why would anyone want to have these in BOTH places(i.e in command-line switch and within testng.xml)?
+-Things that you can do via Annotations cannot be done on testng.xml
+-Some of the things that you can do in testng.xml can also be done via command-line arguments
+-Some of the things can only be done via testng.xml and not via Annotations (e.g include and exclude tests, parallel runs etc)
+-Some of the things can be done via both Annotations and testng.xml (e.g test priority or running the tests in particular order, setting groups, dependencies)
+-explore deeper into this aspect: why would anyone want it?
+Running TestNG programitically: when and why?
+-Steps to run TestNG test class from Maven-POM.xml:-
+1. Ensure TestNG plug-in is installed in Eclipse IDE
+2. Create a TestNG test class from Eclipse IDE Wizard[File->New->Other->TestNG->TestNG class]
+3. Write your test cases steps and TestNG test assertions
+4. In your Eclipse IDE Maven project's POM.xml include the TestNG Test Suite configuration.Like so:-
+<plugins>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.0.0-M1</version>
+     <configuration>
+        <testFailureIgnore>true</testFailureIgnore>    
+                    <!-- Suite testng xml file to consider for test execution -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+</plugin>
+</plugins>
+5. In the Eclipse IDE->POM.xml->Right click->Run As->Run Configuration-> clean test -Dsurefire.suiteXmlFiles=${project_loc:maven-demo}/src/test/java/testng.xml
+
+TEST DESIGN PATTERN: JUNIT4 VS TestNG, TestNG/jUnit inbuilt reports VS MAVEN-SUREFIRE REPORTS etc:-
+-Include all tests that you want to run on a Page Object in one Test Class(as in Junit). Have one Test Class for one Page Object(as in Junit).
+-You can use Maven-Surefire plugin to work with TestNG. The test groups etc can then be specified in the POM.xml and NOT testng.xml(will be overidden) http://maven.apache.org/surefire/maven-surefire-plugin/examples/testng.html 
+-You can use TestNG suite XML file(i.e testng.xml) with Maven-surefire reports. This allows flexible configuration of the tests to be run.(You do not need to mention test groups etc in POM.xml like above) http://maven.apache.org/surefire/maven-surefire-plugin/examples/testng.html :: Using Suite XML Files
+-In TestNG you can run tests in parallel in different threads(using TestNG.xml), From JUnit 4.7 onwards you can run your tests in parallel/threads(using surefire plug-in for maven). http://maven.apache.org/surefire/maven-surefire-plugin/examples/junit.html :: Running Tests in Parallel
+-In TestNG you can run tests in groups (using TestNG.xml), JUnit 4.8 introduced the notion of Categories. You can use JUnit categories by using the groups parameter(using surefire plug-in for maven). 
+-In TestNG, you can specify which tests need to be excluded (using TestNG.xml),In Junit, you can pick and choose the methods you want to run in a Test Class[You can specify which tests can be excluded in Junit(via @Ignore annotation in the test class itself-you do not mention the tests to be ignored in maven-surefire-POM) . [https://junit.org/junit4/ :: Usage and Idioms:Ignoring Tests. ]. In TestNG you can include of exclude tests (say you quickly want to test method post bug fix)
+-In JUnit, ordered test cases is considered bad practice. [https://junit.org/junit4/ :: Test Execution Order]
+But, still the best you can do is sort the test methods (BUT YOU CANNOT SORT THE TEST CLASSES IN A TEST SUITE) on their names Alphabetically:-
+https://howtodoinjava.com/junit/ordered-testcases-execution-in-junit-4/
+https://stackoverflow.com/questions/42599565/execute-order-for-test-suite-in-junit
+-In Junit, using Suit Class, you cannot set the order of test class to be run (but the methods in them can be ordered in Alphabetical manner). Like so:-
+@RunWith(Suite.class)
+@SuiteClasses({
+				YahooGoogleSwitchTabPageObjectTest.class,
+				GitHubPageObjectFactoryTest.class
+				})
+-JUnit will decide the order of the test classes to be run within the test suite. So, in the example above, there's no guarantee that YahooGoogleSwitchTabPageObjectTest.class will always be run first 				
+In TestNG you can set the order of BOTH - the test classes and the methods in them to be run
+-In Junit, you cannot have multiple @Parameters section in the same test class[i.e you cannot have multiple data sets in the same test class, or you can only parameterize a test class in jUnit but not parameterise test methods] to seperate test data structure to each test method[test method<=>page behaviour under test] in a test class (i.e structure test data on the behaviour to be tested)
+Lets say, you have a page with four textfields: login, pwd, first name and last name. TestMethod1 uses login, pwd fields and TestMethod2 uses first name and last name.
+Like so:-
+	@Parameters //two parameters:three sets
+	 public static Object[][] dataforTestMethod1() {
+	        return new Object[][] { 
+	        		{"SubraPGF","password1"}, 
+	        		{"DhruvPGF","password2"}, 
+	        		{"SaiPGF","password3"}
+	        	};
+	        } 
+	
+	@Parameters //two parameters:three sets
+	 public static Object[][] dataforTestMethod2() {
+	        return new Object[][] { 
+	        		{"Subra","Raghavan"}, 
+	        		{"Dhruv","Subramanian"}, 
+	        		{"Sai","Baba"}
+	        	};
+	        } 
+	
+	@Parameter(0)
+	public String loginName;
+	
+	@Parameter(1)
+	public String loginPwd;
+
+	@Parameter(2)
+	public String userFirstName;
+	
+	@Parameter(3)
+	public String userLastName;	
+	
+The error returned will be: java.lang.Exception: Wrong number of parameters and @Parameter fields. @Parameter fields counted: 4, available parameters: 2.
+- This will NOT work if you use Parameterized class https://github.com/junit-team/junit5/issues/1101 unless:-
+  i.)you change the data structure to the following(i.e data set with only one @Parameters):-
+  Like so:-	
+	@Parameters //two parameters:three sets
+	 public static Object[][] testdatastructure2() {
+	        return new Object[][] { 
+	        		{"SubraPGF","password1","Subra","Raghavan"}, 
+	        		{"DhruvPGF","password2","Dhruv","Subramanian"}, 
+	        		{"SaiPGF","password3","Sai","Baba"}
+	        	};
+	        } 
+	
+	@Parameter(0)
+	public String loginName;
+	
+	@Parameter(1)
+	public String loginPwd;
+
+	@Parameter(2)
+	public String userFirstName;
+	
+	@Parameter(3)
+	public String userLastName;
+	
+	ii.)you create a new, seperate parameterized test class and move TestMethod2 and dataforTestMethod2 to it
+	- this is ugly since for the same PO under test, you now have two test classes
+	
+	iii.) use data providers for multiple data sets. Like so:- https://www.lenar.io/junit-dataprovider-example/
+	data provider is available for JUnit by external Java library: https://github.com/TNG/junit-dataprovider/wiki
+	
+KEYWORD DRIVEN FRAMEWORK [KEYWORDSHEET+OBJECT.PROPERTIES FILE]
+- when a locator type and its value change or new elements get added in existing page, you will have to make changes in:-
+  i. keywordsheet: 
+  change ElementLocatorType value of the corresponding existing UIElement. 
+  Add a new value for keyword if the action represented by the newly added element is not currently not present. Inlcude an existing action if it is already present
+  Add a new value for UIElement for the newly added element
+  Change the ElementLocatorType cell value to the new locator type [say, change from CSS to ID for example]
+  ii.object.properties: change value of the corresponding UIElement
+  iii.ElementsClass::performActionOnElement(): include new case if needed 
+  iv. ElementsClass::performActionOnElement()->callJavaScriptExecutor(): include new case, if needed
+
+SELENIUM REMOTE WEBDRIVER:- https://www.selenium.dev/documentation/en/remote_webdriver/
+Configuration:-
+	i.Remote WebDriver client [Jenkins]
+	ii.Remote WebDriver server [remote machine running Selenium Standalone Server.jar. Should also have ChromeDriver.exe,GeckoDriver.exe] 
+Notes:-
+I. Execution Methodology:-
+	Tester will create a RemoteWebdriver object(mentioning Selenium standalone server URL and port where the tests will be run) in the test class and commit->
+	Tester will then push the code from Eclipse to remote repository via EGit->GitHub(/dev branch)->
+	[via Jenkins webhook(configured on GitHub)which will get triggered on push event on /dev branch in GitHub]->
+	Jenkins, acting as a client, will then trigger the test as maven-POM.xml job and run test on the server[remote machine running Selenium Standalone Server.jar will open a browser session,open the AUT webpage URL and execute the selenium commands as given in the test]
+II. **INCOMPLETE:STOPPED SELENIUM STUDY HERE ON 13-MAY-2020** Challenges while executing AUT webpage as a static standalone HTML page (i.e when the AUT webpage is not hosted on a webserver and hence, not accessible via HTTP/S) 
+	i. To ensure code version integrity, it is likely the tester would have placed the AUT HTML page, along with his test files, in his Eclipse workspace,say:- 
+		/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html
+	ii. During GitHub remote push, the AUT HTML page would get created in Jenkins workspace, along with other test files. 
+		Assuming Jenkins server is hosted locally, the AUT HTML path in Jenkins workspace would like this:-
+		http://localhost:9090/job/SeleniumTestsFromGitHub/ws/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html
+		or like this(as publicly accessible Jenkins server URL given by ngrok):-
+		http://335eba90.ngrok.io/job/SeleniumTestsFromGitHub/ws/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html
+	iii. When Jenkins,as a client, triggers the test class on Selenium standalone server URL and port,webdriver.get(AUT URL) command will search for 
+		the AUT webpage at:- /maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html; but the standalone server will return a 'Page Not Found' error.
+		This is because, the test class is being executed on the standalone server remote machine and hence, will look for the AUT webpage relative file path locally.
+		Since, the AUT webpage is not present in the local machine, 'Page not found' error will be shown
+	iv. Even if the tester hardcodes the AUT HTML page Jenkins Workspace location in the test class, he may face two issues:-
+			a. If the AUT HTML page location is hardcoded as localhost[http://localhost:9090/job/SeleniumTestsFromGitHub/ws/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html],
+			   'Page Not Found' error will be shown because the AUT HTML page is not hosted locally on the remote machine running the standalone server where the test class is being executed
+			b. If the AUT HTML page location is hardcoded as ngrok provided publicly accessible Jenkins server path [http://335eba90.ngrok.io/job/SeleniumTestsFromGitHub/ws/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html],
+			   AUT HTML page will be accessible, BUT the Jenkins wilol present the login window to continue. This will be a manual step and will not work for automated test execution	
+Possible Solutions:- **INCOMPLETE:STOPPED SELENIUM STUDY HERE ON 13-MAY-2020**			   
+	i.	Copy the AUT HTML file manually to the remote machine before executing the test
+		pros:-
+			a. Tester can give the AUT HTML file path either as i.)fixed in webdriver.get(AUT HTML URL) or ii.)at runtime parameter in TestNG's suite.xml file(and so need not be stored at a fixed location on the remote machine) 
+		cons:-
+			a. Everytime there's a change in the page, tester will have to manually copy/paste the file on the remote machine. 
+			b. This is cumnersome and involves manual intervention everytime a code is pushed to GitHub. 
+			c. It may not be possible with firewalls blocking
+			d. There could be a file version mismatch between the file being manually copied to the remote machine vs the version pushed to GitHub and Jenkins workspace
+	ii. Copy the AUT HTML file automatically via script to the remote machine before executing the test
+		pros:-
+			<same as above>
+		cons:-
+			<same as above>plus script will have to be under SCM
+	iii. Create an FTP server and post commit, push the AUT HTML file to it in the following way:-
+			a. From a seperate Java class(using org.apache.commons.net.ftp)residing within same project. 
+			Jenkins job will trigger maven top goal->POM.xml->This Java class can be instatitaed from within the test class and called just before RemoteWebDriver object is created 
+			b. Tester can give the fixed ftp AUT HTML path in webdriver.get(AUT HTML URL)
+		pros:-
+			a. Tester can give the AUT HTML file path either as i.)fixed in webdriver.get(AUT HTML URL) or ii.)at runtime parameter in TestNG's suite.xml file(and so need not be stored at a fixed location on the remote machine)		
+		pros:-
+			a. centralised location of the AUT HTML file 
+			b. file need not be copied to all remote machine executing the tests
+			c. No possibily of version mismatch between the version checked in to GitHub/Jenkins workspace and version present in the ftp server
+			d. can be kept secure and publicly accessible at the sametime
+			e. can be accessed as any other (http/s)webpage from the remote machine running the tests
+
+SELENIUM GRID:- https://www.selenium.dev/documentation/en/grid/	
+	i. Selenium Grid working mechanism : https://rationaleemotions.github.io/gridopadesham/GETTING_STARTED.html		
+	ii. Configuration and execution methodlogy:-
+		I.Start Selenium standalone server as a standalone server[use command prompt and not widnows shell: In windows powershell, -Dwebdriver.gecko.driver will not be recognised as one parameter and you will get exception-"Error: Could not find or load main class .chrome.driver=.." ]:-
+		  *D:\Selenium\server>java -Dwebdriver.gecko.driver="D:\\Selenium\\drivers\\geckodriver.exe"  -jar selenium-server-standalone-3.141.59.jar //if webdriver is not included in Windows PATH environment variable
+		  *D:\Selenium\server>java -jar selenium-server-standalone-3.141.59.jar //if webdriver is included in Windows PATH environment variable[Note: restart your machine after including this in PATH environment variable]
+		II.Start Selenium standalone server as a Grid Hub/node:-
+		  *D:\Selenium\server>java -jar selenium-server-standalone-3.141.59.jar -role hub
+		  *java -jar selenium-server-standalone-3.141.59.jar -role node -hub http://localhost:4444/grid/register
+		  *java -jar selenium-server-standalone-3.141.59.jar -role node -hub http://192.168.1.9:2222/grid/register/ -browser browserName=firefox,platform=WINDOWS
+		  *java -Dwebdriver.gecko.driver="D:\\Selenium\\drivers\\geckodriver.exe" -jar selenium-server-standalone-3.141.59.jar -role node -hub http://192.168.1.9:2222/grid/register/ -browser browserName=firefox,platform=WINDOWS
+	      *java -Dwebdriver.gecko.driver=/geckodriver.exe -jar selenium-server-standalone-3.141.59.jar -role node -hub http://192.168.1.9:2222/grid/register/ -browser browserName=firefox,platform=WINDOWS
+		  *D:\Selenium\server>java -Dwebdriver.gecko.driver=./geckodriver.exe -jar selenium-server-standalone-3.141.59.jar -role node -hub http://192.168.1.9:2222/grid/register/ -browser browserName=firefox,platform=WINDOWS,maxInstance=5 -maxSession 4
+		  *java -jar selenium-server-standalone-3.141.59.jar -role hub –hubConfig hubconfig.json
+			where hubconfig.json:-
+			{
+			  "port": 4444,
+			  "newSessionWaitTimeout": -1,
+			  "servlets" : [],
+			  "withoutServlets": [],
+			  "custom": {},
+			  "capabilityMatcher": "org.openqa.grid.internal.utils.DefaultCapabilityMatcher",
+			  "throwOnCapabilityNotPresent": true,
+			  "cleanUpCycle": 5000,
+			  "role": "hub",
+			  "debug": false,
+			  "browserTimeout": 0,
+			  "timeout": 1800
+			}
+		  *Java -Dwebdriver.chrome.driver="chromedriver.exe" -Dwebdriver.ie.driver="IEDriverServer.exe" -Dwebdriver.gecko.driver="geckodriver.exe" -jar selenium-server-standalone-3.141.59.jar -role node -nodeConfig nodeconfig.json
+          *D:\Selenium\server>Java -jar selenium-server-standalone-3.141.59.jar -role node -nodeConfig nodeconfig.json
+		  where nodeconfig.json:-
+			{
+			  "capabilities":
+			  [
+				{
+				  "browserName": "firefox",
+				  "maxInstances": 5,
+				  "seleniumProtocol": "WebDriver"
+				},
+				{
+				  "browserName": "chrome",
+				  "maxInstances": 5,
+				  "seleniumProtocol": "WebDriver"
+				},
+				{
+				  "browserName": "internet explorer",
+				  "maxInstances": 1,
+				  "seleniumProtocol": "WebDriver"
+				}
+			  ],
+			  "proxy": "org.openqa.grid.selenium.proxy.DefaultRemoteProxy",
+			  "maxSession": 5,
+			  "port": 5555,
+			  "register": true,
+			  "registerCycle": 5000,
+			  "hub": "http://PUT_YOUR_HOST_IP_HERE:4444",
+			  "nodeStatusCheckTimeout": 5000,
+			  "nodePolling": 5000,
+			  "role": "node",
+			  "unregisterIfStillDownAfter": 60000,
+			  "downPollingLimit": 2,
+			  "debug": false,
+			  "servlets" : [],
+			  "withoutServlets": [],
+			  "custom": {}
+			}
+		III. Steps to execute selenium in a remote machine:-
+			1. On remote machine, download and start selenium standalone server either in standalone mode or hub/node mode
+			2. On remote machine, download and copy webdriver exe file in the same folder as selenium standalone server [if not in the same folder, then make sure to define JVM parameter  -Dwebdriver.gecko.driver="absolute(full) path of the webdriver.exe" while starting the standalone server]
+			3. in selenium testng class, include the following code(e.g if you want to trigger the tests in FireFox browser on the remote machine):-
+			FirefoxOptions firefoxOptions = new FirefoxOptions();
+			firefoxOptions.setCapability("browserName","firefox"); //this step is optional
+			firefoxOptions.setCapability("platformName","WIN10"); //this step is optional
+			firefoxOptions.setCapability("marionette",true); //this step is optional
+			webdriver=new RemoteWebDriver(new URL ("http://192.168.1.9:4444/wd/hub"),firefoxoptions) //192.168.1.9 is the I.P address of the remote m/c. can be got be running ipconfig command from command prompt. Test whether this IP address is reachable from the machine running jenkins by pinging. 5555 is the port number on which selenium server is started-default is 4444
+			4. start selenium standalone server either in standalone mode or hub/node mode [see above]
+			5.trigger selenium testng class on remote machine via pom.xml which calls testng suite.xml file and gets called as Jenkins build job. Provide suite.xml file name at runtime from command prompt. The suite.xml will execute the selenium testng class  
+			Like so:-
+			Maven::Build::Invoke top-level Maven targets::Goals
+			clean test -Dsurefire.suiteXmlFiles=src/test/java/testngrunmodes.xml
+			Maven::Build::Invoke top-level Maven targets::POM
+			maven-demo\pom.xml 		//pom.xml file path relative to Jenkins project workspace
+			6.test should get triggered on remote machine
+			7.to get sessionID of the browser, to stop any rogue session or to debug, you can access http://192.168.1.9:4444/wd/hub/static/resource/hub.html:-
+			There will be buttons: 'Create Session', 'Refresh Sessions', 'Take Screenshot', 'Delete Session', 'Load Script'
+			For Debug purpose, you can create session on any of the browsers with default capabilities. These values can be seen on the command pront prompt screen running the stanhdalone server
+			You can also see the SessionIDs of the currently live browser sessions on the machine running the remote webdriver
+			- use them to debug or control remote webdriver from your machine	
+			
+CUCUMBER
+- Excellent example of grouping cucumber tests for BDD (User Story based):- 
+https://www.toolsqa.com/cucumber/cucumber-tags/  
+
+-You cannot shift (drag and drop in Eclipse IDE) Step definition classes(irrespective of imported JUnit packages) from packages created under src/test/java to pacakges created under src/main/java
+Infact, ANY .java file created under src/test/java (or packages within src/test/java) CANNOT be moved to src/main/java (or packages within src/main/java) 
+
+-A @Then keyword implementation need not follow the corresponding @Given keyword implementation in the step definition file
+They can be in any order
+
+-Similarly, @Given implementation can be placed in any order within a feature's step definition file
+
+-at the end of execution of all step definitions within a scenario, all objects that were created in it will get destroyed::CHECK
+-however, objects created by different step definitions within a scenario, will be accessible to all step definitions::CHECK
+Answer should be NO to both. Reason being: Once a step definition method exits post execution, Step Definition class object itself will be destroyed(and all the objects created in it during run)::CHECK
+One solution is to push such code to Background, so that the objects created from within Step Definition class persisit for all the step definitions present with a scenario::CHECK
+Cucumber treats every Example data loop run within Scenario Outline a new scenario. So, it will execute all Gherkin keywords once every loop. Object persistence across all loops within a scenario Outline will not work
+
+-It is allowed to run two or more features files with different names but otherwise same content (Feature,Scenario, Scenario Outline keywords, predicates, tags, Examples etc are exactly the same in all features files)
+-In one feature file, 
+  i.   you can have two or more scenarios with exactly same content and in same order. 
+  ii.  the same Step definition can be duplicated in more than one Scenario[e.g: Given ChromeDriver is available] [https://cucumber.io/docs/gherkin/reference/ ::Steps->"Cucumber considers the following steps duplicates"
+  iii. the same Step definition can be duplicated across different Gherkin keywords in different Scenarios
+[e.g: Given all page elements are initialised,Then all page elements are initialised] [https://cucumber.io/docs/gherkin/reference/ ::Steps->"Cucumber considers the following steps duplicates"
+  iv.  the same Step definition can be duplicated across different Gherkin keywords within the same Scenario
+[e.g: Given all page elements are initialised,Then all page elements are initialised]
+Notes: 
+a.Step definitions are executed independent of the Gherkin keywords and their implementation should be unique [https://cucumber.io/docs/gherkin/reference/ :: Steps->"When Cucumber tries to execute a step, it looks for a matching step definition to execute..Keywords are NOT taken into account when looking for a step definition."]
+b.It should be technically possible for Cucumber to scan and execute the predicate w/o Gherkin keywords present in feature file or Gherkin annotations present in Step definition file.
+BUT: w/o Gherkin keywords in the feature file, the purpose of BDD will be defeated-legiblity will be compromised
+Keeping name of the predicate implementing methods same as the predicate may lead to more problems wrt naming convention and code maintainability[in the absence of annotations, step definition objects will have to be created by writing constructor and object.method codes exclusively and calling them everytime] 
+Therefore, the following are allowed:-
+i.)
+@feature
+Feature: GitHubPageObjectTest
+
+Background: setUp
+	Given ChromeDriver is available
+@test1
+Scenario: Initialise Page Object
+    Given GitHub PUT is opened
+    	Then all page elements are initialised
+@test1
+Scenario: Initialise Page Object
+    Given GitHub PUT is opened
+    Then all page elements are initialised 
+***********************
+ii.)
+@feature
+Feature: GitHubPageObjectTest
+
+Background: setUp
+	Given ChromeDriver is available
+     
+@test1
+Scenario: Initialise Page Object
+    Given GitHub PUT is opened
+    	Then all page elements are initialised
+@test1
+Scenario: Initialise Page Object
+    Given  ChromeDriver is available
+    Then all page elements are initialised 
+********************************
+iii.)
+@feature
+Feature: GitHubPageObjectTest
+
+Background: setUp
+	Given ChromeDriver is available
+     
+@test1
+Scenario: Initialise Page Object
+    Given all page elements are initialised
+    Then GitHub PUT is opened
+@test1
+Scenario: Initialise Page Object
+    Given  ChromeDriver is available
+    Then all page elements are initialised 
+************************************
+iv.)
+@feature
+Feature: GitHubPageObjectTest
+
+Background: setUp
+	Given ChromeDriver is available
+     
+@test1
+Scenario: Initialise Page Object
+    Given all page elements are initialised
+    Then all page elements are initialised
+@test1
+Scenario: Initialise Page Object
+    Given  ChromeDriver is available
+    Then all page elements are initialised         
+
+-However, you cannot have duplicate step definitions (confuse Cucumber on which function to execute for a given keyword and predicate)
+for the same or different Keywords.
+-You will get the error: io.cucumber.core.runner.DuplicateStepDefinitionException: Duplicate step definitions in com.selenium.cucumber.junit.testrunner.GitHubPOMStepDefinition.loginFieldsAreVisible() and com.selenium.cucumber.junit.testrunner.GitHubPOMStepDefinition.openPageInitialise()
+if you do so.The following are not allowed in step definition class file:-
+*****duplicate step definition for the same keyword @Given is not allowed in the same step definition class file*******
+public class GitHubPOMStepDefinition {
+  
+	WebDriver webdriver;
+	GitHubPageObjectFactory pgobj,pgelm;
+	Actions actions;
+	WebDriverWait wait;
+	private int waitDuration = 5;	
+  
+  
+  @Given("GitHub PUT is opened")	//open pageURL
+  public void openPageInitialise() throws Throwable{
+	  System.out.println("Given GitHub PUT is opened:2");
+	  webdriver.get(pgobj.pageURL(webdriver));
+  }
+   
+  @Given("GitHub PUT is opened") //@Given("Log in field is present in PUT")
+  public void loginFieldsAreVisible() {
+  System.out.println("Given Log in field is present in PUT:4");	  
+  }
+*****duplicate step definition for the different keywords @Given, @And is not allowed in the same step definition class file*******
+public class GitHubPOMStepDefinition {
+  
+	WebDriver webdriver;
+	GitHubPageObjectFactory pgobj,pgelm;
+	Actions actions;
+	WebDriverWait wait;
+	private int waitDuration = 5;	
+  
+  
+  @Given("GitHub PUT is opened")	//open pageURL
+  public void openPageInitialise() throws Throwable{
+	  System.out.println("Given GitHub PUT is opened:2");
+	  webdriver.get(pgobj.pageURL(webdriver));
+  }
+   
+  @Given("Log in field is present in PUT")
+  public void loginFieldsAreVisible() {
+  System.out.println("Given Log in field is present in PUT:4");	  
+  }
+  
+  @And("GitHub PUT is opened")//@And("Password field is present in PUT")
+  public void pwdFieldsAreVisible() {
+  System.out.println("And Password field is present in PUT:5");  
+  }
+
+-You cannot have duplicate method names within the step definition implementation class file (Java restriction)
+
+-For each Background and Scenario, Cucumber will scan the entire step definition file to look for Keywords(@Given,@And,@When and @Then etc) predicate. If there are any syntactical errors it will show even if the scenario doesn't have that keyword
+
+-Q: Then how does Cucumber map them to a given scenario
+A: Scenarios are no looked up by Cucumber while executing step definition class file. Scenario names can be seen in generated JUnit reports and on console
+-Q: How do the various AND keywords map correctly to their correspodning @Given or @When keyword?
+A: NO THEY DONT. CUCUMBER DOESN'T BOTHER ABOUT THE GHERKIN KEYWORDS-THEY ARE FOR YOU TO CREATE BDD SCENARIOS. 
+CUCUMBER WILL CONSIDER AND SCAN ALL .java FILES FOR THE STEP DEFINITION IMPLEMENTATION FROM WHERE IT IS RUN(DEFAULT)OR WITHIN THE PACKAGE GIVEN IN GLUE AS STEP DEFINITION FILES.
+-A: The predicate order of Given,And, When etc as given in .feature file is followed.
+So, if in the feature file, and AND keyword predicate is preceded by GIVEN keyword predicate, Cucumber will look for the implementation code in the same order in step definition file 
+Q: SO, what if the same step definition is present in more than one feature file but implemented as different functions spread across in more than one step definition class file?
+i.e CAN I HAVE THE SAME STEP DEFINITION IMPLEMENTED AS A DUPLICATE OR DIFFERENTLY IN MORE THAN ONE STEP DEFINITION CLASS FILE(SAME OR DIFFERENT PACKAGE)?
+A: NO. YOU CANNOT. See error-34::BEST PRACTICE above
+
+If there is an error in the commands(syntactical) in feature file, Cucumber will ignore that command and move to the next.
+Corresponding Step definition file function too will not be executed. No error will be shown on console. Like so:-
+Scenario Outline: Validate login credentials
+   	Given Log in field is present in PUT
+  	And Password field is present in PUT
+  	When  I enter the user id 
+  	And I enter the password <pwd> //if there is an error here, execution will move to the next command
+  	Then I verify the entered <userID> in Login field //if there is an error here, execution will move to the next command
+  	And I verify the entered <pwd> in Password field //if there is an error here, execution will move to the next scenario
+
+-Gherkin Feature file Scenario Outline passing parameters syntax:-
+https://cucumber.io/docs/gherkin/reference/#steps
+https://www.toolsqa.com/cucumber/data-driven-testing-using-examples-keyword/
+
+-Step Definition file Scenario Outline parameters receiving syntax:-
+https://cucumber.io/docs/cucumber/cucumber-expressions/
+https://cucumber.io/docs/cucumber/step-definitions/
+
+
+
+

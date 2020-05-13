@@ -1,0 +1,467 @@
+LOCATION OF PROJECTS IN LOCAL MACHINE:-
+	1. Working project folder not linked to GitHub:-
+	   F:\Users\User\eclipse-workspace\maven-demo	   
+	2.  Working project folder linked to GitHub:-
+		C:\Users\User\git\repository\Selenium\maven-demo	
+	3.	Working project in Eclipse backup(use it for both linked and not linked to GitHub):-
+		C:\Users\User\Downloads\Training\Selenium\Newfolder\eclipse-workspace\maven-demo	
+	4. WebDriver location:-
+	   {root location maven-demo folder}/drivers
+	5. Jenkins server .war location(start Jenkins server on localhost and port here):- 
+	   C:\Users\User\Downloads\Training\Selenium\Newfolder
+	6. ngrok application location:-
+	   F:\Users\User\eclipse-workspace\maven-demo\ngrok
+	7. Selenium standalone server jar file[selenium-server-standalone-3.141.59] location (start selenium server here):-
+	   F:\Users\User\eclipse-workspace\maven-demo\server
+
+SELENIUM:-
+Ordering the list of versions in an chronological order.
+1. Selenium 1 : Selenium 1 version was released into the market in the year 2006
+2. Selenium 2 : Selenium 2 version was released into the market in the year 2011 (WebDriver first version 2.0 is launched)
+3. Selenium 3 : Selenium 3 version was released into the market in the year 2016
+4. Selenium 4 : Only ALpha version was released on April 2019, but not yet released officialy.
+The current version of Selenium WebDriver is 3.x
+When running Selenium tests from Maven-pom.xml command line or MavenPom.xml Jenkins, adding the following depdedency in pom.xml should be fine:-
+<dependency>
+  <groupId>org.seleniumhq.selenium</groupId>
+  <artifactId>selenium-java</artifactId>
+  <version>3.141.59</version>
+</dependency>
+
+Installing Selenium webdriver in Eclipse IDE to create and run selenium tests in Eclipse IDE:- https://www.edureka.co/blog/selenium-installation/
+
+JAVA:-
+Oracle account signin:
+userName:sbsubra1974@gmail.com
+pwd:Saibaba@2020
+Download and Install JDK Java SE Development Kit.exe - set Path = F:\Program Files\Java\jdk-11\bin (system variable), JAVA_HOME = F:\Program Files\Java\jdk-11.0.6 (system Environment variable)
+
+ECLIPSE:-
+Download and Install Eclipse- set PATH
+
+MAVEN,JUNIT,TESTNG:-
+You NEED to Download and Install Maven seperately in your system if you want to run Maven(and tests) from commandline for CI,CD-outside of Eclipse IDE- set PATH https://maven.apache.org/install.html
+There is NO need to download and install JUnit jar and TestNG jar seperately in your system if you plan to run Maven(and tests) from command-line for CI,CD.
+However, you can still download TestNG jar and invoke it from the command line like so[w/o maven]:-java org.testng.TestNG testng1.xml [testng2.xml testng3.xml ...]
+-Because you will be adding TestNG and JUnit as dependencies in your Maven's POM.xml, there will no need to install TestNG jar seperately in your system outside of Eclipse IDE. Maven will do it for you when you run pom.xml from command prompt
+Can you install Maven plug-in in Eclipse(required if you wish to run maven from Eclipse IDE)? 
+- Yes. Like so:-
+you should ensure whether you’ve Maven integration for Eclipse enabled. You can test it by opening the Eclipse marketplace window and searching for the maven keyword. In the search results, look for the text: Maven Integration for Eclipse. If it’s not already added, then click to install the maven support.
+-but most probably it would have have been installed already in Eclipse
+Can you install JUnit and TestNG as plug-ins in Eclipse? 
+- Yes. JUnit comes as built-in Eclipse[Go to Eclipse-> Window >> Preferences and search for JUnit. It’ll appear in the window pane]. 
+For TestNG, you can first check whether the plug-in is installed in Eclipse IDE or not.Like so:-
+Go to Window >> Preferences and search for TestNG. It’ll appear in the window pane if your Eclipse IDE has it.
+If not, Try installing it from Eclipse Marketplace. If that doesn't work, install TestNG plug-in explicitly like so:- [https://marketplace.eclipse.org/content/testng-eclipse]
+i. Eclipse->Go to Help > Install New Software... > Add...
+ii. Name: TestNG Location: http://dl.bintray.com/testng-team/testng-eclipse-release/
+- after you create a new TestNG class, Eclipse may show an error that it doesn't recognise the imported testng package. Like so:-
+import org.testng.annotations.Test;        //will show a red underline on org.testng
+import org.testng.annotations.BeforeClass; //will show a red underline on org.testng
+import org.testng.annotations.AfterClass; //will show a red underline on org.testng
+
+public class ExecuteKeywordTest {
+  @Test									//will show a red underline on @Test
+  public void f() {
+  }
+  @BeforeClass							//will show a red underline on @BeforeClass
+  public void beforeClass() {
+  }
+
+  @AfterClass							//will show a red underline on @AfterClass 
+  public void afterClass() {
+  }
+
+}
+- when you hover over, it will give an option 'Add TestNG library'. Choose that. The required testng package will get imported and the red underlines will go away
+- when you select the option 'Add TestNG library' and then run your testng.xml, you may get the following error:-
+[RemoteTestNG] detected TestNG version 7.0.1 Exception in thread "main" java.lang.NoClassDefFoundError: com/google/inject/Stage	at org.testng.internal.Configuration.<init>(Configuration.java:33)
+The issue is a bug in TestNG and can be resolved by updating to the latest version of TestNG. Like so:-
+https://github.com/cbeust/testng-eclipse/issues/472
+for people use "TestNG Library" in eclipse, pls update to testng 7.2.0 with following update site url: https://dl.bintray.com/testng-team/testng-p2-release/7.2.0/
+Note: To update testng in Eclipse, follow the steps i. and ii. above. After you are done, Eclipse will show you a message that TestNG P2 is already installed and so will only be updated. Click on <Finish> to complete upgrade
+
+CUCUMBER
+- Install Cucumber plug-in for Eclipse from Eclipse Marketplace
+- if import cucumber.api.java.en cannot be resolved to a type in StepDefinition.class file, it means cucumber jar is missing in Eclipse IDE. Best way to add the missing jar:-
+import the classes using the Ctrl+Shift+o (alphabet 'o' not zero) shortcut.
+(Ctrl+Shift+O is 'Organise Imports', and will add any missing imports, remove any unused ones, and order all of your imports). The command is also found under Source > Organise Imports
+https://stackoverflow.com/questions/51151585/cucumber-cannot-be-resolved-to-a-type
+Once done, you can verify whether the cucumber depedency has been successfully downloaded in project->Java Build path->Maveb dependencies
+- In Eclipse, when you create a JUnit test runner for Cucumber, you may not see the 'Run As->JUnit' option. This could be due to missing jars. Do the following:-
+i.  Download and include jars in your (maven-demo)Project->Properties->Java Build Path->Aadd External JARS... Eclipse build path. Like so:-
+apiguardian-api.jar
+cucumber-core.jar
+cucumber-expressions.jar
+cucumber-gherkin.jar
+cucumber-junit.jar
+cucumber-plugin.jar
+cucumber-java.jar 
+Make sure all jars are of same versions
+[This jar should be already available when you intstalled Cucumber Eclipse Plugin as given in https://automationpanda.com/2017/10/24/cucumber-jvm-for-java/ :: Prerequisite Tools]
+Full list and jars are available at: C:\Users\User\Downloads\Training\Selenium\Cucumber
+ii. In your JUnit test runner class (created from JUnit test case wizard), ensure all io.cucumber.junit imports are present. Like so:-
+import org.junit.runner.RunWith;
+import io.cucumber.junit.CucumberOptions; //imported from cucumber-junit.jar
+import io.cucumber.junit.Cucumber;		//imported from cucumber-junit.jar
+@RunWith(Cucumber.class) 
+@CucumberOptions() 
+public class CucumberTestRunnerClass { }
+- For running Cucumber tests from Maven-POM.xml, add the following dependency in POM.xml:-
+[Make sure the Cucumber version is the same for all Cucumber dependencies]
+[Also refer: https://cucumber.io/docs/installation/java/]
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-java</artifactId> <!-- This is Cucumber JVM: run Cucumber from the command line or run Cucumber with Maven -->
+    <version>5.6.0</version>
+</dependency>
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-junit</artifactId>
+    <version>5.6.0</version> <!-- Make sure the Cucumber version is the same for all Cucumber dependencies -->
+    <scope>test</scope>
+</dependency>
+
+- While running the Cucumber JUnit test runner file as JUnit Test In Eclipse, you may encounter the following error:-
+io.cucumber.core.exception.CucumberException: No backends were found. Please make sure you have a backend module on your CLASSPATH.
+- make sure cucumber-core, cucumber-java and ALL other required Cucumber jars are included as external jars in Eclipse build path
+https://stackoverflow.com/questions/25923405/exception-in-thread-main-cucumber-runtime-cucumberexception-no-back
+
+- Javadocs: https://www.javadoc.io/doc/io.cucumber/cucumber-junit/latest/io/cucumber/junit/CucumberOptions.html
+
+JENKINS:-
+[JENKINS WINDOWS INSTALLER]Download and Install Jenkins-No need to set Path. Jenkins Installer.exe will do it for you	https://jenkins.io/download/
+When running a Maven job from Jenkins, make sure JDK JAVA_HOME is given correctly (uncheck auto install on the configuration page)
+To start Jenkins:-
+1. type http://localhost:8080/
+2. user: admin pwd: C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
+Buildtime errors while running POM.xml from Jenkins:-
+--[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.12.4:test (default-test) on project maven-demo: No tests were executed!  (Set -DfailIfNoTests=false to ignore this error.) -> [Help 1]
+Comment the following in POM.xml:-
+<!-- 
+<dependency>
+  <groupId>org.apache.maven.surefire</groupId>
+  <artifactId>surefire</artifactId>
+  <version>3.0.0-M4</version>
+  <type>pom</type>
+</dependency>
+-->
+And then include the following in POM.xml after <properties></properties> tag and before <dependencies></dependencies> tag
+<build>
+<plugins>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>		[SUREFIRE IS A REPORTING PLUG-IN FOR MAVEN. SINCE JUNIT'S INTERNAL REPORTING IS NOT GOOD, WE CAN USE SUREFIRE WHEN USING MAVEN TO TRIGGER JUNIT TESTS.IN COMPARISON, TESTNG HAS ITS OWN REPORTS]
+    <artifactId>maven-surefire-plugin</artifactId>  [Location of Maven-surefire reports: F:\Users\User\eclipse-workspace\maven-demo\target\surefire-reports]
+    <version>3.0.0-M1</version>
+</plugin>
+</plugins>
+</build>
+--[ERROR] Source option 5 is no longer supported. Use 6 or later
+Inlcude the following in POM.xml before <build></build> and <dependencies></dependencies> tags
+<properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+</properties>
+-- Jenkins : Selenium GUI tests are not visible on Windows
+https://forgetfulprogrammer.wordpress.com/tag/interact-with-desktop/
+https://stackoverflow.com/questions/9618774/jenkins-selenium-gui-tests-are-not-visible-on-windows
+
+[.War JENKINS INSTALLER**Preferred mode of Jenkins installation**]Do this:-
+1. Stop Jenkins as windows service
+2. Clear browser cache and history
+3. Uninstall Jenkins by going to Windows control panel
+4. Delete existing Jenkins folders:  (else 'Unlock Jenkins' page will not show up at first log in)
+[C:\Program Files (x86)\Jenkins]
+[C:\Users\User\.jenkins]
+5. download jenkins war file: https://jenkins.io/download/ ::Download Jenkins 2.222.1 for: Generic Java Package(war)
+6. Then follow these steps:-
+To download and run the WAR file version of Jenkins:
+Download the latest stable Jenkins WAR file to an appropriate directory on your machine.[C:\Users\User\Downloads\Training\Selenium\jenkins.war]
+Open up a terminal/command prompt window to the download directory.
+Run the command java -jar jenkins.war [java -jar jenkins.war --httpPort=9090]. You will get the following text on the windows powershell console:-
+*************************************************************
+*************************************************************
+*************************************************************
+
+Jenkins initial setup is required. An admin user has been created and a password generated.
+Please use the following password to proceed to installation:
+
+c04afb64a42a44b3a42201ba0713e57b
+
+This may also be found at: C:\Users\User\.jenkins\secrets\initialAdminPassword
+
+*************************************************************
+*************************************************************
+*************************************************************
+Browse to http://localhost:8080(9090) and wait until the Unlock Jenkins page appears.
+Continue on with the Post-installation setup wizard: https://jenkins.io/doc/book/installing/
+Install default suggested plugins
+First admin user: subra, pwd: Saibaba@2020, email: sbsubra1974@gmail.com
+Install Maven Integration plug in: Manage Jenkins > Manage Plugins page in Jenkins::update Center::Available-Filter "Maven"->select Maven Integration: install without restart
+Create a new job in Maven:-
+Jenkins Home page->Jenkins->New Item->Enter Item Name->Freestyle project->ok and save
+Jenkins Home Page->Click on the item name->build->Invoke top-level Maven targets::
+goals->-Dtest=com.selenium.GitHubPageObjectFactoryTest test
+POM->F:\Users\User\eclipse-workspace\maven-demo\pom.xml-> click save
+Jenkins Home->Manage Jenkins->Configure System->Global Tool Configuration->JDK->Add JDK->Uncheck "Install Automatically"->JAVA_HOME::F:\Program Files\Java\jdk-11.0.6->Save
+[To get the value of JAVA_HOME,Right Click on Windows icon on status bar->Settings->System->Home search bar->type "environment"->select->'Edit the system Environment variables'->Click on Environment Variable->System variables->JAVA_HOME::Value F:\Program Files\Java\jdk-11.0.6]
+To Run Jenkins from .war after the above installation is done:-
+1. Go to the folder where jenkins.war is downloaded. Open a Wwindows powershell there. Like so:-
+cd  C:\Users\User\Downloads\Training\Selenium>
+PS  C:\Users\User\Downloads\Training\Selenium>
+2. Start the Jenkins server while chooisng a port to run it. Like so:-
+PS  C:\Users\User\Downloads\Training\Selenium> java -jar jenkins.war --httpPort=9090 <press enter>
+3. Once the Jenkins server start, open browser and type the client. Like so:-
+http://localhost:9090/
+4. Wait for the login page to appear.Enter login details. Like so:-
+Username: subra
+Password: Saibaba@2020
+
+INSTALL GITHUB PLUGIN IN Jenkins 
+1. Steps to do so: https://www.valuebound.com/resources/blog/continuous-integration-using-jenkins-and-github-to-automate-deployment
+
+INSTALL EGIT IN ECLIPSE(for connecting to GitHub):-
+NOTE: You can push,pull,fetch or commit project code created in Eclipse IDE to GitHub[MASTER or BRANCH] using one of the two ways
+[both ways will maintain the Eclipse project folder/source code hierarchy in GitHub Repository]:-
+i. [EGit NOT REQUIRED]:running git commands from command prompt on the repository (Eclipse project root folder). Steps to do so:-
+	1. Open Git Bash.
+	2. Change the current working directory to the location where you want the cloned directory to be made.
+	3. $ git clone --single-branch --branch <branchname> <remote-repo> [to access a code branch and not the master in GitHub]
+	4. Press Enter. Your local clone will be created.
+	5. Open the local clone thus created in Eclipse
+	6. Make code changes, save and compile in Eclipse IDE-perform a test run if required
+	7. Push the changes in your local repository to branch in GitHub.
+		$ git remote add origin https://github.com/sbsubra1974/KeywordFramework.git [see: https://stackoverflow.com/questions/10904339/github-fatal-remote-origin-already-exists]
+		$ git push -u origin master
+	
+ii. [EGit REQUIRED]:running git commands from Eclipse [Right click on project->Team:Commit,Push,Pull,Fetch etc], 
+	creating new Git repository in your local machine from Eclipse, cloning source code from GitHub to your local repository using Eclipse etc
+	[https://eclipsesource.com/blogs/tutorials/egit-tutorial/]
+	i.  Install EGit as a plugin in Eclipse
+	ii. Right click on Project->Team->Share Project...->Configure Git Repository->Create a New Git Repository:current location::the location of the project you right clicked from:Traget location::the new Repository location
+		Keep 'Use or create repository in parent folder of project unchecked [default]
+	iii.When you click Finish, all files from the current location of project you right clicked from, will be copied to the Target location   	
+	
+INSTALL APACHE POI IN ECLIPSE:-
+install Apache POI[https://www.toolsqa.com/selenium-webdriver/add-apache-poi-jars/]:-
+From running from Eclipse-plugin from marketplace-N/A
+From running from Maven/Jenkins- add as depedency in POM
+From command line- download POT jar:-
+1. download the zip from http://poi.apache.org/download.html#POI-4.1.2
+2. click the project name, navigate to Main Menu->Properties->Java Build Path->Libraries
+3. Click on Add External JARS and navigate to the folder where you have kept the Apache POI jar files.
+4. Select the Executable Jar files from all the folders.<Apply and Close>
+
+CREATE JAVA PROPERTY FILE IN ECLIPSE
+https://medium.com/@sonaldwivedi/how-to-read-config-properties-file-in-java-6a501dc96b25
+
+SETTING UP MAVEN PROJECT IN ECLIPSE[https://www.techbeamers.com/create-selenium-webdriver-maven-project/] , creating user actions using Selenium webdriver, creating Junit test assertions:- https://www.youtube.com/watch?v=sNEcpw8LPpo&feature=youtu.be
+Note: You create Maven project in Eclipse IDE. But, this project setup can be used to run tests BOTH from Maven-Eclipse IDE or outside of Eclipe IDE via command prompt
+1.Eclipse->New->Maven Project
+groupID: com.selenium		https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html
+artifactID: maven-demo
+
+2.Add the following dependencies in pom.xml:-
+NOTE: AFTER YOU MAKE ANY CHANGE IN POM.XML, INCLUDING COMMENTING, SAVE POM.XML->RIGHT CLICK ON THE PROJECT->MAVEN->UPDATE PROJECT...
+<dependencies>
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+  <groupId>org.apache.maven.surefire</groupId>
+  <artifactId>surefire</artifactId>
+  <version>3.0.0-M4</version>
+  <type>pom</type>
+</dependency>
+</dependencies>
+
+3. To avoid the error when you execute: "[ERROR] Source option 5 is no longer supported. Use 6 or later"
+<properties> 
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+  </properties>
+
+4.  Create Java Class (Selenium WebDriver API based-your selenium actions)
+Project Explorer
+maven-demo
+	|- src/main/java right click->New->Class->Give Name->Finish
+
+5. Create Junit test case (POM model: keep test assertions seperate from User actions done on Browser)
+Project Explorer
+maven-demo
+	|- src/test/java right click->New->Other->Junit test case
+
+6. Change the JRE system library
+Project Explorer
+maven-demo
+	|- JRE System Library->Right click->Properties-> choose Workspace default JRE(e.g jdk-11.0.6)->Apply and Close
+
+Run Junit tests:-
+1. From Eclipse [Requires JUnit and Maven Integration for Eclipse Plug-in to be installed in Eclipse IDE.POM.xml will be run from Eclipse IDE]
+	run all tests from junit without using Maven (a)
+	Project Explorer
+    maven-demo
+		|- src/test/java ->right click-> Run As -> Run Configurations->Test tab->Run all tests in the selected project,package or source folder (selected radio button by default)->Run->observe the execution status on Eclipse's jUnit tab within IDE
+
+	run all tests from junit without using Maven (b)
+	Project Explorer
+    maven-demo
+		|- src/test/java ->right click-> Run As -> jUnit Test-> observe the execution status on Eclipse's jUnit tab within IDE	
+	
+	run specific test from junit without using Maven (a)
+	Project Explorer
+    maven-demo
+		|- src/test/java ->right click-> Run As -> Run Configurations->Test tab->Select radio button 'Run a single Test'->give test class name (e.g com.selenium.AppTest)->give test method name (optional)->Run->observe the execution status on Eclipse's jUnit tab within IDE	
+	
+	run specific test from junit without using Maven (b)
+	Project Explorer
+    maven-demo
+		|- src/test/java
+			|- com.selenium (package)
+				|- AppTest.java (junit test case)->right click-> Run As JUnit test -> observe the execution status on Eclipse's jUnit tab within IDE
+	
+	from pom.xml, run all tests using Maven (a)
+	Project Explorer
+    maven-demo	
+		|- pom.xml->right click->Run As->Maven Test->observe the execution status on Eclipse's Console tab within IDE
+	
+	from pom.xml, run all tests using Maven (b)
+	Project Explorer
+    maven-demo	
+		|- pom.xml->right click->Run As->Maven build...->main tab->Goals->-Dtest=com.selenium.AppTest,com.selenium.AppTest2 test->Run->observe the execution status on Eclipse's Console tab within IDE
+	
+	from pom.xml, run all tests using Maven (c)
+	Project Explorer
+    maven-demo	
+		|- pom.xml->right click->Run As->Run Configurations->select one of the Maven Builds listed->main tab->Goals->-Dtest=com.selenium.AppTest,com.selenium.AppTest2 test->Run->observe the execution status on Eclipse's Console tab within IDE
+	
+	from pom.xml, run specific test using Maven (a)
+	Project Explorer
+    maven-demo	
+		|- pom.xml->right click->Run As->Maven build...->main tab->Goals->-Dtest=com.selenium.AppTest test->Run->observe the execution status on Eclipse's Console tab within IDE
+	
+	from pom.xml, run specific test using Maven (b)
+	Project Explorer
+    maven-demo	
+		|- pom.xml->right click->Run As->Run Configurations->select one of the Maven Builds listed->main tab->Goals->-Dtest=com.selenium.AppTest test->Run->observe the execution status on Eclipse's Console tab within IDE
+	
+	from pom.xml, run specific Cucumber test using Maven 
+	Project Explorer
+    maven-demo	
+		|- pom.xml->right click->Run As->Run Configurations->select one of the Maven Builds listed->main tab->Goals->exec:java -Dexec.classpathScope=test -Dexec.mainClass=io.cucumber.core.cli.Main -Dexec.args="src/main/resources/com/selenium/cucumber/features/GoogleMapPageObjectFactory.feature --glue com.selenium.cucumber.stepdef --tags @test21"->Run->observe the execution status on Eclipse's Console tab within IDE
+		
+	from pom.xml, run specific Java Class using Maven 
+	Project Explorer
+    maven-demo	
+		|- pom.xml->right click->Run As->Run Configurations->select one of the Maven Builds listed->main tab->Goals->exec:java -Dexec.mainClass="com.selenium.inc.TypeTextInSearchBox"->Run->observe the execution status on Eclipse's Console tab within IDE
+	
+
+2. Execute Maven from command prompt outside of Eclipse IDE 
+[Requires Maven to be installed in your system outside of Eclipse IDE for CI,CD as given in https://maven.apache.org/install.html]
+[Because you've added JUnit as a dependency in your POM.xml, there is no need to install JUnit jar seperately in your system outside of Eclipse IDE. Maven will do it for you when you run pom.xml from command prompt]
+Run Power Shell from maven-demo project folder(do:SHIFT+Right click->Open Powershell Window here, on maven-demo folder):mvn test (make sure Maven is installed in local machine)
+	|- F:\Users\User\eclipse-workspace\maven-demo> mvn clean test (to delete existing reports and run all tests) [mvn command will search for pom.xml execute the commands in the project folder from where mvn is run]
+	|- F:\Users\User\eclipse-workspace\maven-demo> mvn -Dtest=OpenBrowserTest,AppTest2 clean test (to run specific tests)
+	|- F:\Users\User\eclipse-workspace\maven-demo> mvn -Dtest=TestCircle#testOne+testTwo clean test (for multiple methods in the same class)
+	|- F:\Users\User\eclipse-workspace\maven-demo>mvn -Dtest=TestCircle#testOne+testTwo,TestCircle2#testOne+testTwo clean test (for multiple methods in the different classes)
+	- https://maven.apache.org/plugins-archives/maven-surefire-plugin-2.12.4/examples/single-test.html
+	
+3. Jenkins->Maven
+
+
+System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+- you don't need to download and store chromedriver.exe in drivers folder. Just add the following dependency(i.e selenium-java dependency) to your project pom.xml:-
+<dependency>
+  <groupId>org.seleniumhq.selenium</groupId>
+  <artifactId>selenium-java</artifactId>
+  <version>3.141.59</version>
+</dependency>
+- The selenium-java dependency supports running your automation project with ALL Selenium supported browsers.
+
+location of selenium and junit reference documents:-
+Selenium WebDriver Javadocs: https://www.javadoc.io/doc/org.seleniumhq.selenium/selenium-api/2.50.1/org/openqa/selenium/WebDriver.html
+jUnit javadocs: https://junit.org/junit4/javadoc/latest/index.html
+
+What should contain in a Page Object file?
+should a command like this be made part of POM class?
+element = webdriver.findElement(By.name("userName")); //will be webpage specific
+Tip: These pages are stored as objects, which will contain specific information about how the web page is composed and how actions are performed– very little of which should concern you as a tester.
+So, the answer is 'yes' because findElement(By.) how actions are going to be performed on the page
+the com.selenium.BrowserPageObject.pageURL() simply returns the composition of the webpage (i.e its URL). Hence, it is included in the PO file
+ - https://www.selenium.dev/documentation/en/introduction/on_test_automation/
+
+
+Install Google Chrome Plug-in
+
+*********************************
+TestNG Installation as Eclipse plug-in and Maven Depedency: https://www.techbeamers.com/create-selenium-webdriver-maven-project/
+Note: You create Maven project in Eclipse IDE. But, this project setup can be used to run tests BOTH from Maven-Eclipse IDE or outside of Eclipe IDE via command prompt
+
+Installing TestNG as Eclipse Plug-in:-
+To check whether you’ve TestNG plugin installed in your Eclipse. Just go to Window >> Preferences and search for TestNG. It’ll appear in the window pane if your Eclipse IDE has it.
+If not, Try installing it from Eclipse Marketplace. If that doesn't work, install TestNG plug-in explicitly like so:- [https://marketplace.eclipse.org/content/testng-eclipse]
+i. Eclipse->Go to Help > Install New Software... > Add...
+ii. Name: TestNG Location: http://dl.bintray.com/testng-team/testng-eclipse-release/
+
+Installing TestNG via Maven Integration for Eclipse Plug-in[i.e as a Maven dependency via POM.xml in Eclipse IDE]:-
+[Required if you want to run your TestNG tests for CI,CD outside of Eclipse IDE]
+[You can run TestNG tests via Maven from Eclipse IDE if Maven Integration for Eclipse Plug-in is installed in your Eclipse IDE. You may check from Help->Eclipse Marketplace->Installed...and wait for sometime for the installed plugins list to load]
+[Because you will be adding TestNG as a dependency in your POM.xml, there is no need to install TestNG jar seperately in your system outside of Eclipse IDE. Maven will do it for you when you run pom.xml from command prompt]
+[However, you can still download TestNG jar and invoke it from the command line like so[w/o maven]:-java org.testng.TestNG testng1.xml [testng2.xml testng3.xml ...] ]
+
+Installing TestNG as Maven Dependency:-
+Add TestNG dependency in POM.xml
+<dependency>
+  <groupId>org.testng</groupId>
+  <artifactId>testng</artifactId>
+  <version>6.8</version>
+  <scope>test</scope>
+</dependency>
+
+Create new TestNG test class in Eclipse IDE:-
+1. Create a new package in existing maven-demo project in Eclipse
+com.selenium.testng
+
+2. In Eclipse IDE, right click on the package->New->Other...->TestNG->TestNG Class->give test class name->XML Suite Class->testng.xml
+[This step will work only when 'Installing TestNG as Eclipse Plug-in' step above is successful]
+
+SELENIUM REMOTE WEBDRIVER[WHEN YOU DO NOT WANT GRID AND MULTIPLE NODES BUT JUST WANT RUN AN INSTANCE OF TEST ON A REMOTE MACHINE]
+1.THE REMOTE MACHINE ON WHICH YOU WANT TO RUN SELENIUM TESTS WILL BE THE REMOTE WEBDRIVER SERVER. [https://www.selenium.dev/documentation/en/remote_webdriver/remote_webdriver_server/]
+- on the remote machine, install JAVA SE SDK
+- on the remote machine, download selenium standalone server.jar
+- on the remote machine, download webdriver [chromedriver]
+- java -jar /somePathToJARfile/Selenium-server-standalone-3.141.59.jar
+- http://localhost:4444 you will get Selenium Stadalone server page
+- Run ngrok on Remote machine and get its public access URL
+2. THE CLIENT MACHINE FROM WHERE YOU WANT TO RUN THE SELENIUM TESTS
+- set up the remotewebdriver with its desired capabilities. Like so:- [https://www.selenium.dev/documentation/en/remote_webdriver/remote_webdriver_client/]
+	FirefoxOptions firefoxOptions = new FirefoxOptions();
+	WebDriver driver = new RemoteWebDriver(new URL("http://www.example.com"), firefoxOptions);
+	driver.get("http://www.google.com");
+	driver.quit(); 
+	OR
+	ChromeOptions chromeOptions = new ChromeOptions();
+	chromeOptions.setCapability("browserVersion", "67");
+	chromeOptions.setCapability("platformName", "Windows XP");
+	WebDriver driver = new RemoteWebDriver(new URL("http://www.example.com"), chromeOptions);
+	driver.get("http://www.google.com");
+	driver.quit();
+
+SETTING UP SELENIUM GRID[HUB,NODE] TO RUN SELENIUM TESTS REMOTELY[SELENIUM HUB(CALLED FROM JENKINS SERVER AS A POST BUILD JOB)EXECUTES SELENIUM TESTS ON REMORE MACHINES.
+THESE REMOTE MACHINES ACCESS THE WEB AUT FROM THE SERVER WHERE JENKINS HAS JUST DEPLOYED A (e.g SERVLET)BUILD SUCCESSFULLY]
+standalone server/grid setup:-
+1. On the remote machine, download Java SE JDK (first check whether Java is installed or not: java -version)
+2. On the remote machine, download selenium standalone server.jar
+3. On the remote machine, download webdriver [chromedriver]
+4. On the remote machine, download ngrok [to make Hub and node URLs public to be accessed from Jenkins server]
+5. On the remote machine, start the Hub[Selenium Grid server]:-
+java -jar /somePathToJARfile/Selenium-server-standalone-3.141.59.jar -role hub -port 3333
+6. Client[Jenkins server] should connect to: http://192.168.1.9:3333/wd/hub [make the IP public by ngrok]
+7. Nodes should register to[remote machine(s) on which the selenium tests will be executed. Nodes should connected to the webserver whose .war has been just deployed by Jenkins Build task]
+:-
+https://192.168.1.9:3333/grid/register/ 
+7. To view the Grod console:-
+http://192.168.1.9:3333/grid/console

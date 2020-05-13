@@ -2,24 +2,24 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-05-11T21:54:28 IST" name="Default suite" finished-at="2020-05-11T21:54:29 IST" duration-ms="571">
+  <suite started-at="2020-05-12T19:28:19 IST" name="Default suite" finished-at="2020-05-12T19:36:40 IST" duration-ms="500200">
     <groups>
     </groups>
-    <test started-at="2020-05-11T21:54:28 IST" name="Default test" finished-at="2020-05-11T21:54:29 IST" duration-ms="571">
-      <class name="com.selenium.testng.RemoteFilePathTest">
-        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.RemoteFilePathTest@69997e9d]" started-at="2020-05-11T21:54:29 IST" name="beforeClass" finished-at="2020-05-11T21:54:29 IST" duration-ms="89" status="PASS">
+    <test started-at="2020-05-12T19:28:19 IST" name="Default test" finished-at="2020-05-12T19:36:40 IST" duration-ms="500200">
+      <class name="com.selenium.testng.SendFTPFileTest">
+        <test-method is-config="true" signature="beforeClass()[pri:0, instance:com.selenium.testng.SendFTPFileTest@15aab8c6]" started-at="2020-05-12T19:28:19 IST" name="beforeClass" finished-at="2020-05-12T19:28:19 IST" duration-ms="15" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeClass -->
-        <test-method signature="f()[pri:0, instance:com.selenium.testng.RemoteFilePathTest@69997e9d]" started-at="2020-05-11T21:54:29 IST" name="f" finished-at="2020-05-11T21:54:29 IST" duration-ms="51" status="PASS">
+        <test-method signature="f()[pri:0, instance:com.selenium.testng.SendFTPFileTest@15aab8c6]" started-at="2020-05-12T19:28:19 IST" name="f" finished-at="2020-05-12T19:36:40 IST" duration-ms="500127" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- f -->
-        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.RemoteFilePathTest@69997e9d]" started-at="2020-05-11T21:54:29 IST" name="afterClass" finished-at="2020-05-11T21:54:29 IST" duration-ms="1" status="PASS">
+        <test-method is-config="true" signature="afterClass()[pri:0, instance:com.selenium.testng.SendFTPFileTest@15aab8c6]" started-at="2020-05-12T19:36:40 IST" name="afterClass" finished-at="2020-05-12T19:36:40 IST" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterClass -->
-      </class> <!-- com.selenium.testng.RemoteFilePathTest -->
+      </class> <!-- com.selenium.testng.SendFTPFileTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

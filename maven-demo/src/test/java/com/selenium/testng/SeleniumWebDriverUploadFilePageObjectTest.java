@@ -1,8 +1,13 @@
 package com.selenium.testng;
 
+/* 13-May-2020: INCOMPLETE: Stopped Selenium study here. maven-demo project folder pushed to GitHub and Jenkins wporkspace
+ * 
+ * */
+
 import org.testng.annotations.Test;
 
 import com.selenium.po.SeleniumWebDriverUploadFilePageObject;
+import com.selenium.util.FTPFileTransfer;
 
 import org.testng.annotations.BeforeClass;
 
@@ -22,6 +27,7 @@ public class SeleniumWebDriverUploadFilePageObjectTest {
 	SeleniumWebDriverUploadFilePageObject pgobj;
 	Actions actions;
 	WebDriver webdriver;
+	FTPFileTransfer ftp;
 	
   @Test(groups= {"gp1"})
   public void testSeleniumWebDriverUploadFilePageObject() throws URISyntaxException {
@@ -31,6 +37,11 @@ public class SeleniumWebDriverUploadFilePageObjectTest {
   }
   @BeforeClass(groups= {"gp1"})
   public void beforeClass() throws MalformedURLException {
+  
+  //send the static HTML file to the remote server
+  ftp = new FTPFileTransfer();
+  ftp.ftpFileTransfer("192.168.1.5", 4444, "/maven-demo/src/main/resources/com/selenium/webpages/SeleniumWebdriverUploadFile.html","SeleniumWebdriverUploadFile.html");
+	  
   //System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
   //webdriver = new ChromeDriver();
   ChromeOptions chromeOptions = new ChromeOptions();

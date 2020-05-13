@@ -1,0 +1,31 @@
+java.lang.IllegalArgumentException: The glue path contained invalid identifiers
+
+You need to give the package name where the step definition class file resides for glue. 
+DO NOT give the full path of the Step definition class file. The following will give this error:-
+package com.selenium.cucumber.junit.testrunner;
+import org.junit.runner.RunWith;
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.junit.Cucumber;
+
+@RunWith(Cucumber.class) 
+@CucumberOptions(tags= {"@feature","@test2"},
+features= {"src/main/resources/com/selenium/cucumber/features/GitHubPageObjectFactory_second.feature"},
+glue= {"src/test/java/com/selenium/cucumber/stepdef/GitHubPageObjectFactoryStepDefinition.java"}
+) 
+public class GitHubPageObjectFactoryTestRunner { }
+
+Replace the glue path with the pacakage where the step definition class file resides.Like so:-
+package com.selenium.cucumber.junit.testrunner;
+import org.junit.runner.RunWith;
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.junit.Cucumber;
+
+@RunWith(Cucumber.class) 
+@CucumberOptions(tags= {"@feature","@test2"},
+features= {"src/main/resources/com/selenium/cucumber/features/GitHubPageObjectFactory_second.feature"},
+glue= {"com.selenium.cucumber.stepdef"}
+) 
+public class GitHubPageObjectFactoryTestRunner { }
+
+-Q: But, how does Cuucmber know WHICH step definition class file to pick from the package given in glue?
+

@@ -1,0 +1,30 @@
+at com.selenium.testng.GitHubPageObjectFactoryTestRemoteWebDriver.beforeClass(GitHubPageObjectFactoryTestRemoteWebDriver.java:51)
+Caused by: org.openqa.selenium.json.JsonException: 
+Unable to determine type from: <. Last 1 characters read: <
+
+org.openqa.selenium.WebDriverException: 
+Unable to parse remote response: <!DOCTYPE html>
+
+There was an error in the forked process
+org.xml.sax.SAXParseException; lineNumber: 8; columnNumber: 45; Element type "method" must be declared.
+org.apache.maven.surefire.booter.SurefireBooterForkException: There was an error in the forked process
+
+Driver info: driver.version: GitHubPageObjectFactoryTestRemoteWebDriver
+	at com.selenium.testng.GitHubPageObjectFactoryTestRemoteWebDriver.beforeClass(GitHubPageObjectFactoryTestRemoteWebDriver.java:51)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   GitHubPageObjectFactoryTestRemoteWebDriver.beforeClass:51 » WebDriver Unable t...
+[INFO] 
+
+UnreachableBrowser 404 Not Found error
+POST /session
+GET / request to the same ngrok URL (when sent via browser) works fine
+
+Possible reason: Chromer Driver not starting on remote m/c due to version mismatch with installed chrome browser on the remote machine
+rogue instances of chromedriver running in tasks
+try downgrading the chromedriver version
+try running selenium standalone server on a different port than the default port of 4444. Like so:-
+java -jar selenium-server-standalone-3.141.59.jar -port 5555

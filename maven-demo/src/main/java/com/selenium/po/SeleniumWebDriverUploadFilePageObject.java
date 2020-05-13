@@ -1,5 +1,9 @@
 package com.selenium.po;
 
+/* 13-May-2020: INCOMPLETE: Stopped Selenium study here. maven-demo project folder pushed to GitHub and Jenkins wporkspace
+ * 
+ * */
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
